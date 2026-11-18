@@ -12,7 +12,7 @@ The default Armory worker is **Hermes**.
 ARA is part of the Ready Armor suite with Battle Ready Armor.
 The shared approach is **Control in Depth**: place separate controls at resource, policy, task, model, and review boundaries.
 
-[Read the complete documentation](docs/README.md) · [Explore the system codex](docs/codex.md) · [Trace an engagement](docs/end-to-end.md)
+[Read the complete documentation](docs/README.md) · [Explore the system codex](docs/codex.md) · [Trace an engagement](docs/end-to-end.md) [More Info](https://gainsec.github.io/ReadyArmor-Agent-Ready-Armor-ARA/)
 
 ## Why the Ready Armor design matters
 
