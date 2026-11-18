@@ -142,7 +142,7 @@ Task records support continuity when a conversation or operator changes.
 | ![Sew Trim creation with its preview and engagement condition sections.](docs/assets/screenshots/sew-trim-creation.png) | ![Rhema live workbench with a selected request pair and recent envelope cards.](docs/assets/screenshots/rhema-live-workbench.png) |
 | Sew groups target scope, operating conditions, authorization, and delivery settings into the Trim creation form. | Rhema places the selected request pair beside its rule stack and recent interaction cards. |
 
-[Browse all 18 views](docs/screenshots.md) · [Open the interactive gallery](pages/index.html#screenshots)
+[Browse all 18 views](docs/screenshots.md) · [Open the interactive gallery](docs/index.html#screenshots)
 
 ## Control in Depth starts at the resource
 
@@ -363,7 +363,7 @@ Implementation: [_on_query](src/ara/supervisor.py#L781), [call](src/ara/runtime/
 
 ## Interactive technical atlas
 
-Open the [self-contained technical atlas](pages/index.html) for the capability catalog, architecture diagrams, operating traces, searchable guides, and source excerpts.
+Open the [self-contained technical atlas](docs/index.html) for the capability catalog, architecture diagrams, operating traces, searchable guides, and source excerpts.
 The complete site works offline as one HTML file.
 Read [Documentation site](docs/site.md) for rebuilding and GitHub Pages publication.
 

@@ -1,7 +1,7 @@
 # ARA interface gallery
 
 Explore the equipment, operating controls, and records through the product views.
-Open [the interactive gallery](../pages/index.html#screenshots) to inspect each full image.
+Open [the interactive gallery](index.html#screenshots) to inspect each full image.
 
 ## Equipment
 

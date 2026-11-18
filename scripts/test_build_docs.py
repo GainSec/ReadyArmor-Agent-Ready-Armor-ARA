@@ -135,6 +135,16 @@ class AtlasContract(unittest.TestCase):
                 ],
             }
             (root / "docs/site.json").write_text(json.dumps(profile))
+            (root / "docs/source-index.md").write_text(
+                "# Stored source index\n\nPreserve this repository Markdown.\n"
+            )
+            (root / "docs/unlisted.md").write_text("# Additional guide\n")
+            (root / "docs/assets/keep.bin").write_bytes(b"\x00preserved asset")
+            inputs = {
+                path.relative_to(root).as_posix(): path.read_bytes()
+                for path in root.rglob("*")
+                if path.is_file() and path.relative_to(root).as_posix() != "docs/source-index.md"
+            }
             r = subprocess.run(
                 ["python3", str(BUILDER), "--root", str(root)],
                 capture_output=True,
@@ -142,10 +152,10 @@ class AtlasContract(unittest.TestCase):
             )
             self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
             self.assertTrue(
-                (root / "pages/index.html").is_file(),
-                "The builder must emit an isolated Pages HTML artifact",
+                (root / "docs/index.html").is_file(),
+                "The builder must emit the checked-in docs publication",
             )
-            page = (root / "pages/index.html").read_text()
+            page = (root / "docs/index.html").read_text()
             self.assertIn(
                 "Empty module marker", (root / "docs/source-index.md").read_text()
             )
@@ -227,14 +237,19 @@ class AtlasContract(unittest.TestCase):
                 tags.local_links,
                 "Published navigation must stay within the standalone HTML document",
             )
-            self.assertTrue((root / "pages/.nojekyll").exists())
-            self.assertEqual(
-                {p.name for p in (root / "pages").iterdir()},
-                {"index.html", ".nojekyll"},
-                "Pages output must contain only the standalone page and its static marker",
-            )
-            self.assertTrue((root / "docs/usage.md").exists())
-            self.assertTrue((root / "docs/site.json").exists())
+            self.assertTrue((root / "docs/.nojekyll").exists())
+            self.assertFalse((root / "pages").exists(), "Do not create a second publication")
+            for relative, original in inputs.items():
+                self.assertEqual(
+                    (root / relative).read_bytes(), original,
+                    f"The builder changed repository input {relative}",
+                )
+            outputs = {
+                path.relative_to(root).as_posix()
+                for path in root.rglob("*") if path.is_file()
+            } - set(inputs) - {"docs/source-index.md"}
+            self.assertEqual(outputs, {"docs/index.html", "docs/.nojekyll"})
+
 
 
 if __name__ == "__main__":

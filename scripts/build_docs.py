@@ -973,18 +973,8 @@ class Atlas:
             + JS
             + "</script></body></html>\n"
         )
-        publication = self.root / "pages"
+        publication = self.root / "docs"
         publication.mkdir(exist_ok=True)
-        unexpected = [
-            p.name
-            for p in publication.iterdir()
-            if p.name not in {"index.html", ".nojekyll"}
-        ]
-        if unexpected:
-            raise ValueError(
-                "The Pages output must contain only the standalone HTML publication: "
-                + ", ".join(unexpected)
-            )
         dest = publication / "index.html"
         dest.write_text(output)
         (publication / ".nojekyll").touch()

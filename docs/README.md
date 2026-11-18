@@ -47,7 +47,7 @@ For output review, read the evidence guide and the finding and report sections o
 
 ## Interactive edition
 
-Open [the technical atlas](../pages/index.html) to explore the architecture, capabilities, operating traces, complete guides, and implementation excerpts.
+Open [the technical atlas](index.html) to explore the architecture, capabilities, operating traces, complete guides, and implementation excerpts.
 Use [Documentation site](site.md) for the build and publishing procedure.
 
 ## Implementation file index
