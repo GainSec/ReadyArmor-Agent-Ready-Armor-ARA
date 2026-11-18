@@ -1,0 +1,30 @@
+# Hermes profile - temper mode.
+#
+# Uses the same containment shape as Forge, but allows a longer loop for
+# source-by-source Temper coverage. Tailor Robes + Needle define the containment identity;
+# the MCP surface writes pending candidates to the active Tailor session
+# and cannot modify live armor policy.
+
+model:
+  default: "qwen/qwen3.6-35b-a3b"
+  provider: "lmstudio"
+  base_url: "http://127.0.0.1:1234/v1"
+  reasoning_effort: "none"
+
+platform_toolsets:
+  cli: []
+
+agent:
+  max_turns: 48
+
+skills:
+  creation_nudge_interval: 0
+
+mcp_servers:
+  ara-temper:
+    command: python3.9
+    args: ["-m", "ara.cli", "temper-mcp"]
+    env:
+      PYTHONPATH: "${PYTHONPATH}"
+      ARA_STATE_ROOT: "${ARA_STATE_ROOT}"
+      ARA_SESSION_ID: "${ARA_SESSION_ID}"

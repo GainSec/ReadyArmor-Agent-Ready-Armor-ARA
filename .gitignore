@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+*.o
+*.a
+*.so
+*.dylib
+
+# ARA dev state
+.ara/
+.serena/
+preflight/
+.playwright-mcp/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Test junk
+/TESTDEPO/
+.coverage
+htmlcov/
+coverage.xml
+
+# Local environments and credentials
+.venv/
+.env
+.env.*
+!.env.example
+*.pem
+*.key

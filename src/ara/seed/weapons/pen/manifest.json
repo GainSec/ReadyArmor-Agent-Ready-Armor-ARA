@@ -1,0 +1,8 @@
+{
+  "weapon_id": "pen",
+  "is_seed": true,
+  "mats": [],
+  "elements": [],
+  "coverage": null,
+  "note": "Hand-authored seed; no mats. The forge orchestrator does not need a manifest for pen because this weapon was not produced by EXHAUST."
+}

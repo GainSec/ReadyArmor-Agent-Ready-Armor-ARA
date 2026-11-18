@@ -1,0 +1,10 @@
+{
+  "description": "Baseline armor for the Hermes Agent runtime. Protects Hermes' own state (config, persona, skills, memories) from agent-side modification, blocks dangerous shell commands and credential paths. Companion to `ara launch --contain -- hermes ...`.",
+  "sigil": "scroll",
+  "tags": ["hermes", "default"],
+  "shadow_mode": false,
+  "absolute_enforce": true,
+  "channels": [],
+  "created_at": 0.0,
+  "updated_at": 0.0
+}

@@ -1,0 +1,23 @@
+{
+  "id": "needle",
+  "weapon_target_id": "needle",
+  "version": "0.1.0",
+  "is_seed": true,
+  "sealed_at": "2026-06-16T00:00:00Z",
+  "description": "Default Temper weapon. Locks the agent to producing reviewable armor-policy, expected-methodology posture, and reusable safety-constraint candidates from MATS, sealed weapons, trims, task completion, and operator evidence. Every candidate must include a thread_type and destination-specific control object; proposed_text is only the operator preview. Rich sources should produce multiple distinct candidates per destination when useful, and coverage must reference every accepted candidate id exactly once. Hand-authored seed, companion to Tailor Robes.",
+  "policy_files": ["bulwark.md"],
+  "temper_channels": [
+    "temper.absolute_candidate",
+    "temper.bulwark_candidate",
+    "temper.canary_candidate",
+    "temper.rhema_candidate",
+    "temper.approval_gate_candidate",
+    "temper.alert_hook_candidate",
+    "temper.trim_template_candidate",
+    "temper.coverage_summary"
+  ],
+  "alphabets": {},
+  "manifest_coverage": null,
+  "chunks": [],
+  "spec": "docs/superpowers/specs/2026-06-16-temper-destination-matrix.md"
+}

@@ -1,0 +1,54 @@
+{
+  "weapon_id": "blacksmith-hammer",
+  "is_seed": true,
+  "generated_at": "2026-04-26T00:00:00Z",
+  "channels": [
+    {
+      "name": "extract.proc",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "Procedure / crumb extraction (PROC alphabet)."
+    },
+    {
+      "name": "extract.conc",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "Conceptual shape extraction (CONC alphabet)."
+    },
+    {
+      "name": "extract.fact_shape",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "Fact-shape registration."
+    },
+    {
+      "name": "extract.store",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "Resource / store entry extraction (FACT alphabet)."
+    },
+    {
+      "name": "extract.line",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "Scope / out-of-scope line extraction (META alphabet)."
+    },
+    {
+      "name": "fact.assert",
+      "source_subsystem": "runtime.facts",
+      "sink_subsystem": "facts.jsonl",
+      "callers": ["agent"],
+      "purpose": "Direct fact assertion during extraction."
+    }
+  ],
+  "read_channels": [
+    "mats.search", "mats.get",
+    "evidence.search", "evidence.get",
+    "facts.query"
+  ]
+}

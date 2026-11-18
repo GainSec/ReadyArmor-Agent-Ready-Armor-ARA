@@ -1,0 +1,282 @@
+/* ARA Docs — trading-card codex.
+ *
+ * Builds on armor-card.css; only adds the grid, the link-wrapping of
+ * cards, the compact variant, and the prose pane for topic pages.
+ */
+
+.bc-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease-out;
+}
+.bc-card-link:hover { transform: translateY(-4px); }
+.bc-card-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 6px; border-radius: 18px; }
+
+/* Card-as-button (index page): strip native button chrome. */
+button.bc-card-btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: inherit;
+  width: 100%;
+}
+button.bc-card-btn.is-active .bc-card::before {
+  opacity: 1;
+  filter: brightness(1.2);
+}
+button.bc-card-btn.is-active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Rarity group — collapsible <details>. */
+.doc-rarity-group {
+  margin-top: 28px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-container-lowest) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 20%, transparent);
+  overflow: hidden;
+}
+.doc-rarity-group > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 20px;
+  user-select: none;
+}
+.doc-rarity-group > summary::-webkit-details-marker { display: none; }
+.doc-rarity-group > summary:hover { background: rgba(255,255,255,0.02); }
+.doc-rarity-heading {
+  font-family: 'Orbitron', var(--font-display);
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #fff;
+}
+.doc-rarity-count {
+  font-family: 'Press Start 2P', var(--font-mono);
+  font-size: 10px;
+  color: #ffd166;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: rgba(255,209,102,0.08);
+  border: 1px solid rgba(255,209,102,0.25);
+}
+.doc-rarity-sub {
+  font-family: 'Rajdhani', var(--font-body);
+  font-size: 13px;
+  color: var(--text-mute);
+  flex: 1;
+}
+.doc-rarity-chev {
+  font-size: 18px;
+  color: var(--text-mute);
+  transition: transform 0.2s ease;
+}
+.doc-rarity-group[open] .doc-rarity-chev { transform: rotate(180deg); }
+
+.doc-rarity-group[data-rarity="legendary"] .doc-rarity-heading { color: #ffd166; text-shadow: 0 0 10px rgba(255,209,102,0.4); }
+.doc-rarity-group[data-rarity="epic"]      .doc-rarity-heading { color: #cc66ff; text-shadow: 0 0 10px rgba(204,102,255,0.4); }
+.doc-rarity-group[data-rarity="rare"]      .doc-rarity-heading { color: #4fc3f7; text-shadow: 0 0 10px rgba(79,195,247,0.4); }
+.doc-rarity-group[data-rarity="uncommon"]  .doc-rarity-heading { color: #1eff8e; }
+.doc-rarity-group[data-rarity="common"]    .doc-rarity-heading { color: #c9d4dd; }
+
+.doc-rarity-group > .doc-card-grid {
+  padding: 10px 20px 22px;
+  margin-top: 0;
+}
+
+/* Selected panel at top of index page. */
+.doc-selected-panel {
+  display: none;
+  scroll-margin-top: 130px;
+  margin: 24px 0 4px;
+  padding: 24px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top, rgba(74,166,204,0.08), transparent 60%),
+    color-mix(in srgb, var(--surface-container-lowest) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  box-shadow: 0 0 40px rgba(74,166,204,0.12);
+  position: relative;
+  animation: docPanelIn 0.32s cubic-bezier(.2,.7,.3,1.1);
+}
+.doc-selected-panel.is-open { display: block; }
+@keyframes docPanelIn {
+  from { transform: translateY(-8px) scale(0.98); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+.doc-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  background: rgba(15,20,32,0.85);
+  color: #fff;
+  font-size: 22px; line-height: 1;
+  cursor: pointer;
+  z-index: 5;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+.doc-close:hover {
+  background: var(--error, #c9434b);
+  transform: rotate(90deg) scale(1.05);
+}
+/* Pull the topic card center + slightly smaller in the panel vs topic-page. */
+.doc-selected-panel .doc-topic-layout {
+  margin-top: 0;
+}
+.doc-selected-panel .doc-topic-card {
+  position: static;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.doc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px 24px;
+  margin-top: 20px;
+  align-items: start;
+}
+
+.bc-card.bc-card-compact {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+/* Sigil top-aligned with padding so it clears the absolutely-positioned
+ * name-plate at the bottom of the art area. Centered-vertical looked nice
+ * but the name-plate gradient ran into the sigil on compact cards. */
+.bc-card.bc-card-compact .bc-card-art {
+  height: 210px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+  padding-bottom: 66px;
+}
+.bc-card.bc-card-compact .bc-sigil { width: 86px; height: 86px; }
+.bc-card.bc-card-compact .bc-sigil svg { width: 40px; height: 40px; }
+.bc-card.bc-card-compact .bc-name-plate { padding: 14px 12px 12px; }
+.bc-card.bc-card-compact .bc-name-plate h2 { font-size: 18px; letter-spacing: 3px; }
+.bc-card.bc-card-compact .bc-abilities { padding: 12px 16px; }
+.bc-card.bc-card-compact .bc-ability-grid { grid-template-columns: 1fr; gap: 6px; }
+
+/* Same treatment for hero card so the Rhema/WALLS art doesn't clip either. */
+.bc-card:not(.bc-card-compact) .bc-card-art {
+  height: 240px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+  padding-bottom: 78px;
+}
+.bc-card:not(.bc-card-compact) .bc-name-plate { padding: 16px 14px 14px; }
+
+.doc-topic-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: 36px;
+  align-items: start;
+  margin-top: 24px;
+}
+.doc-topic-card {
+  position: sticky;
+  top: 24px;
+}
+
+.doc-topic-body .doc-section {
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-container-lowest) 70%, transparent);
+  border-left: 3px solid var(--primary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--outline-variant) 18%, transparent);
+}
+.doc-topic-body .doc-section .ara-eyebrow {
+  font-family: 'Orbitron', var(--font-display);
+  letter-spacing: 4px;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+.doc-prose p {
+  font-family: 'Rajdhani', var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  color: #dbe3ea;
+  margin: 0 0 10px 0;
+}
+.doc-prose p:last-child { margin-bottom: 0; }
+.doc-prose code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: rgba(255,255,255,0.05);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #ffd166;
+}
+.doc-prose pre.ara-code {
+  margin: 10px 0;
+  font-size: 12px;
+}
+.doc-prose strong {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.doc-prose em { color: #a1e6ff; font-style: normal; }
+
+.doc-strip { margin-top: 32px; }
+.doc-strip-row {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 10px;
+}
+.doc-strip-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-family: 'Rajdhani', var(--font-body);
+  font-size: 14px; font-weight: 600;
+  color: #dbe3ea;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.doc-strip-pill:hover {
+  transform: translateY(-1px);
+  border-color: var(--primary);
+  color: #fff;
+}
+.doc-strip-tier {
+  font-family: 'Press Start 2P', var(--font-mono);
+  font-size: 9px;
+  color: #ffd166;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 900px) {
+  .doc-topic-layout { grid-template-columns: 1fr; }
+  .doc-topic-card { position: static; max-width: 420px; margin: 0 auto; }
+}
+
+@media (max-width: 560px) {
+  .doc-card-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .bc-card.bc-card-compact { max-width: 100%; }
+  .doc-topic-body .doc-section { padding: 14px 16px; }
+  .doc-prose p { font-size: 14px; }
+  .doc-prose pre.ara-code {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .doc-strip-row { gap: 6px; }
+  .doc-strip-pill { padding: 6px 10px; font-size: 13px; }
+}

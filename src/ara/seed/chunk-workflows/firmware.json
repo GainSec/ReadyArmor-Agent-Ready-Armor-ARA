@@ -1,0 +1,351 @@
+{
+  "name": "firmware",
+  "description": "Hardware/firmware teardown loop: map physical + debug interfaces, extract firmware, analyze it, write up findings, operator sign-off. For embedded/IoT device engagements (JTAG/UART/SPI, flash dumps, firmware review).",
+  "chunks": [
+    {
+      "id": "recon",
+      "title": "Recon \u2014 identify the device & its interfaces",
+      "prompt_fragment": "You are surveying a physical device. Identify the board, chips, and exposed interfaces (UART, JTAG, SWD, SPI/I2C flash, USB, debug pads). Do NOT file findings. Capture what you observe as facts; promote suspicious interfaces to leads.",
+      "tool_surface": [
+        "fact.assert",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "lead.file",
+        "evidence.search",
+        "evidence.get",
+        "mats.search",
+        "chunks.emit_tag"
+      ],
+      "exits": {
+        "<interfaces_mapped>": {
+          "tag": "<interfaces_mapped>",
+          "next_chunk_id": "interfaces",
+          "requires_caller": "agent",
+          "description": "Interfaces identified; advance to interface access."
+        },
+        "<need_pause>": {
+          "tag": "<need_pause>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "agent",
+          "description": "Operator input required."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": true,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "recon_read",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "recon_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "recon_fs",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "enum_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "interfaces",
+      "title": "Interfaces \u2014 gain access via a debug/flash interface",
+      "prompt_fragment": "You are working the device's interfaces. Attempt authorized access over UART/JTAG/SWD or locate the flash chip for readout. Capture connection details and access state as facts. No findings yet.",
+      "tool_surface": [
+        "evidence.search",
+        "evidence.get",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "fact.assert",
+        "lead.file",
+        "mats.search",
+        "chunks.emit_tag",
+        "finding.file"
+      ],
+      "exits": {
+        "<access_gained>": {
+          "tag": "<access_gained>",
+          "next_chunk_id": "extract",
+          "requires_caller": "agent",
+          "description": "Have a route to firmware; advance to extraction."
+        },
+        "<need_more_recon>": {
+          "tag": "<need_more_recon>",
+          "next_chunk_id": "recon",
+          "requires_caller": "agent",
+          "description": "Need more interface recon; go back."
+        },
+        "<need_pause>": {
+          "tag": "<need_pause>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "agent",
+          "description": "Operator input required."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "probe_active",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "probe_exec",
+          "inhibition_level": 0.4,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "probe_fs",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "probe_reply",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "extract",
+      "title": "Extract \u2014 dump the firmware",
+      "prompt_fragment": "You are extracting firmware (flash dump, OTA image, or memory read). Record the image provenance and integrity as facts/evidence. Do not analyze deeply here \u2014 just get a sound, attributable image. No findings.",
+      "tool_surface": [
+        "evidence.search",
+        "evidence.get",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "fact.assert",
+        "lead.file",
+        "mats.search",
+        "chunks.emit_tag",
+        "finding.file"
+      ],
+      "exits": {
+        "<firmware_extracted>": {
+          "tag": "<firmware_extracted>",
+          "next_chunk_id": "analyze",
+          "requires_caller": "agent",
+          "description": "Firmware image captured; advance to analysis."
+        },
+        "<extraction_failed>": {
+          "tag": "<extraction_failed>",
+          "next_chunk_id": "interfaces",
+          "requires_caller": "agent",
+          "description": "Extraction failed; return to interfaces."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "probe_active",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "probe_exec",
+          "inhibition_level": 0.4,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "probe_fs",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "probe_reply",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "analyze",
+      "title": "Analyze \u2014 unpack & inspect the firmware",
+      "prompt_fragment": "You are analyzing the extracted firmware: unpack the filesystem, inspect bootloader/secure-boot state, hunt hardcoded secrets, outdated components, and insecure update logic. Build hypotheses as leads; gather the evidence a finding will need.",
+      "tool_surface": [
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "evidence.search",
+        "evidence.get",
+        "lead.investigate",
+        "chunks.emit_tag",
+        "fact.assert",
+        "lead.file",
+        "finding.file"
+      ],
+      "exits": {
+        "<ready_for_writeup>": {
+          "tag": "<ready_for_writeup>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Enough evidence; advance to writeup."
+        },
+        "<need_more_extraction>": {
+          "tag": "<need_more_extraction>",
+          "next_chunk_id": "extract",
+          "requires_caller": "agent",
+          "description": "Need a different/fuller image; go back."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "intel_net",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "intel_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "intel_fs",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "intel_reply",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "writeup",
+      "title": "Writeup \u2014 draft findings",
+      "prompt_fragment": "You are writing up firmware/hardware findings from the evidence and leads gathered. File each finding with its evidence and a CVSS-style severity. Return to analysis if a claim is under-evidenced.",
+      "tool_surface": [
+        "facts.query",
+        "evidence.get",
+        "finding.file",
+        "finding.enrich",
+        "style.score",
+        "chunks.emit_tag",
+        "fact.assert",
+        "lead.file"
+      ],
+      "exits": {
+        "<finding_drafted>": {
+          "tag": "<finding_drafted>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Drafted a finding; continue or pause."
+        },
+        "<back_to_analyze>": {
+          "tag": "<back_to_analyze>",
+          "next_chunk_id": "analyze",
+          "requires_caller": "agent",
+          "description": "Need more evidence; back to analysis."
+        },
+        "<engagement_complete>": {
+          "tag": "<engagement_complete>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "operator",
+          "description": "Operator signs off the engagement."
+        }
+      },
+      "can_emit_finding": true,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "writeup_net",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "writeup_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "writeup_fs",
+          "inhibition_level": 0.8,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "writeup_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "operator_review",
+      "title": "Operator review",
+      "prompt_fragment": "Await operator sign-off.",
+      "tool_surface": [],
+      "exits": {},
+      "can_emit_finding": false,
+      "is_terminal": true,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "operator_review_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    }
+  ]
+}

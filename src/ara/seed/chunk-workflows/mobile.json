@@ -1,0 +1,291 @@
+{
+  "name": "mobile",
+  "description": "Mobile app loop: recon the app & its backends, static analysis of the package, dynamic/runtime testing, write up findings, operator sign-off. For Android/iOS application engagements.",
+  "chunks": [
+    {
+      "id": "recon",
+      "title": "Recon \u2014 map the app & its backends",
+      "prompt_fragment": "You are surveying a mobile app. Identify the package, its permissions, declared components, embedded endpoints and third-party SDKs. Do NOT file findings. Capture observations as facts; promote suspicions to leads.",
+      "tool_surface": [
+        "fact.assert",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "lead.file",
+        "evidence.search",
+        "evidence.get",
+        "mats.search",
+        "chunks.emit_tag"
+      ],
+      "exits": {
+        "<app_mapped>": {
+          "tag": "<app_mapped>",
+          "next_chunk_id": "static",
+          "requires_caller": "agent",
+          "description": "App surface mapped; advance to static analysis."
+        },
+        "<need_pause>": {
+          "tag": "<need_pause>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "agent",
+          "description": "Operator input required."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": true,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "recon_read",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "recon_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "recon_fs",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "enum_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "static",
+      "title": "Static \u2014 analyze the package",
+      "prompt_fragment": "You are statically analyzing the app package (manifest, code, resources, storage): permissions, exported components, secrets, crypto misuse, insecure storage. Build hypotheses as leads; capture evidence. No findings yet.",
+      "tool_surface": [
+        "evidence.search",
+        "evidence.get",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "fact.assert",
+        "lead.file",
+        "mats.search",
+        "chunks.emit_tag",
+        "finding.file"
+      ],
+      "exits": {
+        "<needs_runtime>": {
+          "tag": "<needs_runtime>",
+          "next_chunk_id": "dynamic",
+          "requires_caller": "agent",
+          "description": "Hypotheses need runtime confirmation; advance."
+        },
+        "<static_finding_ready>": {
+          "tag": "<static_finding_ready>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "A static finding is fully evidenced; advance to writeup."
+        },
+        "<need_more_recon>": {
+          "tag": "<need_more_recon>",
+          "next_chunk_id": "recon",
+          "requires_caller": "agent",
+          "description": "Need more app recon; go back."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "probe_active",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "probe_exec",
+          "inhibition_level": 0.4,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "probe_fs",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "probe_reply",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "dynamic",
+      "title": "Dynamic \u2014 runtime & network testing",
+      "prompt_fragment": "You are testing the running app: traffic interception, runtime instrumentation, auth/session handling, backend API behavior. Confirm or refute the static hypotheses; capture the evidence a finding needs.",
+      "tool_surface": [
+        "evidence.search",
+        "evidence.get",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "fact.assert",
+        "lead.file",
+        "mats.search",
+        "chunks.emit_tag",
+        "finding.file"
+      ],
+      "exits": {
+        "<ready_for_writeup>": {
+          "tag": "<ready_for_writeup>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Enough evidence; advance to writeup."
+        },
+        "<back_to_static>": {
+          "tag": "<back_to_static>",
+          "next_chunk_id": "static",
+          "requires_caller": "agent",
+          "description": "Need to re-check the package; go back."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "probe_active",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "probe_exec",
+          "inhibition_level": 0.4,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "probe_fs",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "probe_reply",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "writeup",
+      "title": "Writeup \u2014 draft findings",
+      "prompt_fragment": "You are writing up mobile findings from the evidence and leads gathered. File each finding with its evidence and a CVSS-style severity. Return to dynamic testing if a claim is under-evidenced.",
+      "tool_surface": [
+        "facts.query",
+        "evidence.get",
+        "finding.file",
+        "finding.enrich",
+        "style.score",
+        "chunks.emit_tag",
+        "fact.assert",
+        "lead.file"
+      ],
+      "exits": {
+        "<finding_drafted>": {
+          "tag": "<finding_drafted>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Drafted a finding; continue or pause."
+        },
+        "<back_to_dynamic>": {
+          "tag": "<back_to_dynamic>",
+          "next_chunk_id": "dynamic",
+          "requires_caller": "agent",
+          "description": "Need more evidence; back to dynamic."
+        },
+        "<engagement_complete>": {
+          "tag": "<engagement_complete>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "operator",
+          "description": "Operator signs off the engagement."
+        }
+      },
+      "can_emit_finding": true,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "writeup_net",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "writeup_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "writeup_fs",
+          "inhibition_level": 0.8,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "writeup_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "operator_review",
+      "title": "Operator review",
+      "prompt_fragment": "Await operator sign-off.",
+      "tool_surface": [],
+      "exits": {},
+      "can_emit_finding": false,
+      "is_terminal": true,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "operator_review_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    }
+  ]
+}

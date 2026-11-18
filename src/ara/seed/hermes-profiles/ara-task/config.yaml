@@ -1,0 +1,54 @@
+# Hermes profile - ARA task mode.
+#
+# This profile is copied into each contained armory-task session as
+# $HOME/.hermes. It deliberately avoids the operator's generic Hermes persona
+# and keeps ARA's runtime channels mounted through MCP.
+
+model:
+  default: "qwen/qwen3.6-35b-a3b"
+  provider: "lmstudio"
+  base_url: "http://127.0.0.1:1234/v1"
+  reasoning_effort: "low"
+
+terminal:
+  backend: local
+  cwd: .
+  timeout: 180
+
+browser:
+  inactivity_timeout: 120
+
+compression:
+  enabled: true
+  threshold: 0.5
+  target_ratio: 0.2
+  protect_last_n: 20
+
+memory:
+  memory_enabled: false
+  user_profile_enabled: false
+
+platform_toolsets:
+  cli: [terminal, file]
+
+skills:
+  creation_nudge_interval: 0
+
+agent:
+  max_turns: 60
+  verbose: false
+  reasoning_effort: low
+
+streaming:
+  enabled: false
+
+mcp_servers:
+  ara-forge:
+    command: python3.9
+    args: ["-m", "ara.cli", "forge-mcp"]
+    env:
+      PYTHONPATH: "__ARA_SRC_DIR__"
+      ARA_SOCKET: "${ARA_SOCKET}"
+      ARA_SESSION_TOKEN: "${ARA_SESSION_TOKEN}"
+      ARA_SESSION_ID: "${ARA_SESSION_ID}"
+      ARA_FORGE_MCP_MODE: "task"

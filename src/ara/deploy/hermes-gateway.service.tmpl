@@ -1,0 +1,21 @@
+[Unit]
+Description=Hermes Gateway under ARA supervision
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory={home}
+Environment=HERMES_HOME={home}/.hermes
+Environment=PYTHONPATH={pythonpath}
+Environment=HERMES_ACCEPT_HOOKS=1
+Environment=ARA_PYINTERCEPT_DISABLE=1
+Environment="PATH={path_env}"
+ExecStart={python_bin} -m ara.cli launch --state-root {state_root} --contain --contain-profile hermes-gateway -- {hermes_bin} gateway run --accept-hooks
+Restart=always
+RestartSec=5
+TimeoutStopSec=210s
+KillMode=control-group
+
+[Install]
+WantedBy=default.target

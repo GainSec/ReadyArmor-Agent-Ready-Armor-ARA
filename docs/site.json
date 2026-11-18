@@ -1,0 +1,3428 @@
+{
+  "product": "ARA",
+  "name": "Agent Ready Armor",
+  "tagline": "Agent controls on the host, from reusable methods to accepted results.",
+  "summary": "ARA runs supervised agents directly on the host, without a separate VM or container. Reusable equipment and persistent records remain separate from worker and model choices. Operators use Armory, CLI commands, and implemented HTTP actions; worker clients use MCP or session IPC. Native and supported runtime controls govern operations, while evidence checks and operator sign-off govern accepted output.",
+  "accent": "#0b756a",
+  "chapters": [
+    {
+      "path": "README.md",
+      "label": "Overview"
+    },
+    {
+      "path": "docs/screenshots.md",
+      "label": "Product screenshots"
+    },
+    {
+      "path": "docs/ready-armor.md",
+      "label": "Ready Armor approach"
+    },
+    {
+      "path": "docs/control-in-depth.md",
+      "label": "Control in Depth"
+    },
+    {
+      "path": "docs/architecture.md",
+      "label": "Architecture"
+    },
+    {
+      "path": "docs/codex.md",
+      "label": "System codex"
+    },
+    {
+      "path": "docs/features.md",
+      "label": "Feature reference"
+    },
+    {
+      "path": "docs/end-to-end.md",
+      "label": "Complete workflows"
+    },
+    {
+      "path": "docs/cognitive-mechanisms.md",
+      "label": "Cognitive mechanisms"
+    },
+    {
+      "path": "docs/forge.md",
+      "label": "Forge"
+    },
+    {
+      "path": "docs/equipment.md",
+      "label": "Equipment"
+    },
+    {
+      "path": "docs/evidence.md",
+      "label": "Evidence and review"
+    },
+    {
+      "path": "docs/operations.md",
+      "label": "Operator guide"
+    },
+    {
+      "path": "docs/configuration.md",
+      "label": "Configuration"
+    },
+    {
+      "path": "docs/BULWARK-SPEC.md",
+      "label": "Policy grammar"
+    },
+    {
+      "path": "docs/integrations.md",
+      "label": "Agent integrations"
+    },
+    {
+      "path": "docs/interfaces.md",
+      "label": "Interfaces"
+    },
+    {
+      "path": "docs/troubleshooting.md",
+      "label": "Troubleshooting"
+    },
+    {
+      "path": "docs/glossary.md",
+      "label": "Technical terms"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "label": "Development"
+    },
+    {
+      "path": "docs/site.md",
+      "label": "Documentation site"
+    },
+    {
+      "path": "docs/source-index.md",
+      "label": "Source file index"
+    },
+    {
+      "path": "LICENSE.md",
+      "label": "License"
+    }
+  ],
+  "features": [
+    {
+      "title": "External authority",
+      "description": "Policy and typed output contracts are evaluated outside the worker model.",
+      "mechanism": "Supervisor and Channel.call",
+      "source": [
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_query",
+          "line": 781
+        },
+        {
+          "path": "src/ara/runtime/channels/base.py",
+          "symbol": "call",
+          "line": 90
+        }
+      ]
+    },
+    {
+      "title": "Source workspace",
+      "description": "KEEP holds class-partitioned materials and canonical engagement intake.",
+      "mechanism": "engagement_mats validators and storage",
+      "source": [
+        {
+          "path": "src/ara/engagement_mats.py",
+          "symbol": "ensure_engagement",
+          "line": 125
+        },
+        {
+          "path": "src/ara/engagement_mats.py",
+          "symbol": "add_mat_bytes",
+          "line": 235
+        },
+        {
+          "path": "src/ara/engagement_mats.py",
+          "symbol": "set_mat_selected",
+          "line": 347
+        }
+      ]
+    },
+    {
+      "title": "Engagement context",
+      "description": "Sew derives a Trim deterministically from operator intake.",
+      "mechanism": "derive_trim and generated Bulwark/ABSOLUTE sections",
+      "source": [
+        {
+          "path": "src/ara/armory/trim_views.py",
+          "symbol": "parse_derive_form",
+          "line": 573
+        },
+        {
+          "path": "src/ara/trims.py",
+          "symbol": "derive_trim",
+          "line": 806
+        },
+        {
+          "path": "src/ara/trims.py",
+          "symbol": "apply_trim",
+          "line": 643
+        }
+      ]
+    },
+    {
+      "title": "Persistent identity",
+      "description": "Armor selects persistent identity, doctrine and scoped policy.",
+      "mechanism": "active armor helpers and policy scope",
+      "source": [
+        {
+          "path": "src/ara/armors.py",
+          "symbol": "set_active_armor",
+          "line": 371
+        },
+        {
+          "path": "src/ara/armors.py",
+          "symbol": "load_armor",
+          "line": 436
+        }
+      ]
+    },
+    {
+      "title": "Sealed capability",
+      "description": "Weapon equipment merges reversible policy overlays.",
+      "mechanism": "equip_policy and unequip_policy",
+      "source": [
+        {
+          "path": "src/ara/weapons.py",
+          "symbol": "equip_policy",
+          "line": 209
+        },
+        {
+          "path": "src/ara/weapons.py",
+          "symbol": "unequip_policy",
+          "line": 252
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_maybe_install_engagement",
+          "line": 1514
+        }
+      ]
+    },
+    {
+      "title": "Reviewed hardening",
+      "description": "Current Armory creates curated first-class Temper packages.",
+      "mechanism": "install_baseline_temper,ingest,equip",
+      "source": [
+        {
+          "path": "src/ara/armory/temper_views.py",
+          "symbol": "handle_temper_create",
+          "line": 498
+        },
+        {
+          "path": "src/ara/armory/temper_views.py",
+          "symbol": "handle_temper_tailor_start",
+          "line": 549
+        },
+        {
+          "path": "src/ara/tempers.py",
+          "symbol": "ingest",
+          "line": 118
+        },
+        {
+          "path": "src/ara/tempers.py",
+          "symbol": "equip",
+          "line": 247
+        }
+      ]
+    },
+    {
+      "title": "Typed control candidates",
+      "description": "Tailor/Needle validates source-derived candidate schemas before promotion.",
+      "mechanism": "validate_control, candidate/citation/coverage validation",
+      "source": [
+        {
+          "path": "src/ara/clients/temper_mcp_server.py",
+          "symbol": "call_tool",
+          "line": 514
+        },
+        {
+          "path": "src/ara/temper_lifecycle.py",
+          "symbol": "_validate_tailor_candidate",
+          "line": 195
+        },
+        {
+          "path": "src/ara/temper_lifecycle.py",
+          "symbol": "add_tailor_coverage_summary",
+          "line": 594
+        },
+        {
+          "path": "src/ara/temper_controls.py",
+          "symbol": "validate_control",
+          "line": 153
+        }
+      ]
+    },
+    {
+      "title": "Source manifest",
+      "description": "Forge deposits become stable source manifest elements.",
+      "mechanism": "deposit_mat,enumerate/read extractors",
+      "source": [
+        {
+          "path": "src/ara/forge/phases/deposit.py",
+          "symbol": "deposit_mat",
+          "line": 45
+        },
+        {
+          "path": "src/ara/forge/phases/manifest.py",
+          "symbol": "run_manifest",
+          "line": 27
+        },
+        {
+          "path": "src/ara/forge/manifest/element.py",
+          "symbol": "make_element_id",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "title": "Selective retention",
+      "description": "Operator exclusions survive fresh manifest enumeration.",
+      "mechanism": "_merge_with_prior_drops and record_extraction",
+      "source": [
+        {
+          "path": "src/ara/forge/phases/manifest.py",
+          "symbol": "_merge_with_prior_drops",
+          "line": 70
+        },
+        {
+          "path": "src/ara/forge/phases/exhaust.py",
+          "symbol": "record_extraction",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "title": "Contained extraction",
+      "description": "Contained or stateless extraction writes typed source-cited events.",
+      "mechanism": "Forge MCP schema/channels/record_extraction",
+      "source": [
+        {
+          "path": "src/ara/forge/loop_driver.py",
+          "symbol": "run_exhaust",
+          "line": 292
+        },
+        {
+          "path": "src/ara/forge/loop_driver.py",
+          "symbol": "run_exhaust_stateless",
+          "line": 1017
+        },
+        {
+          "path": "src/ara/forge/phases/exhaust.py",
+          "symbol": "record_extraction",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "title": "Structured synthesis",
+      "description": "Synthesis groups extraction events and projects pack vocabularies.",
+      "mechanism": "synthesize,project,foreign-key checks",
+      "source": [
+        {
+          "path": "src/ara/forge/phases/synthesize.py",
+          "symbol": "synthesize",
+          "line": 223
+        },
+        {
+          "path": "src/ara/forge/alphabets/projector.py",
+          "symbol": "project",
+          "line": 255
+        }
+      ]
+    },
+    {
+      "title": "Domain vocabularies",
+      "description": "Pack Forge produces reusable alphabet/workflow/policy definitions.",
+      "mechanism": "pack mode channel restrictions,draft curation,seal_pack",
+      "source": [
+        {
+          "path": "src/ara/forge/alphabets/pack.py",
+          "symbol": "AlphabetPack",
+          "line": 131
+        },
+        {
+          "path": "src/ara/forge/pack_draft.py",
+          "symbol": "build_pack_draft",
+          "line": 182
+        },
+        {
+          "path": "src/ara/forge/phases/seal.py",
+          "symbol": "seal_pack",
+          "line": 230
+        }
+      ]
+    },
+    {
+      "title": "Conflict resolution",
+      "description": "Pack conflicts have explicit merge,split,cell-resolution and drop operations.",
+      "mechanism": "apply_decision and conflict detection",
+      "source": [
+        {
+          "path": "src/ara/forge/reconcile.py",
+          "symbol": "detect_conflict_groups",
+          "line": 129
+        },
+        {
+          "path": "src/ara/forge/reconcile.py",
+          "symbol": "apply_decision",
+          "line": 218
+        }
+      ]
+    },
+    {
+      "title": "Artifact seal",
+      "description": "Seal validates and writes executable equipment artifacts.",
+      "mechanism": "Target ID,coverage,citation and alphabet validators",
+      "source": [
+        {
+          "path": "src/ara/forge/phases/seal.py",
+          "symbol": "seal",
+          "line": 266
+        },
+        {
+          "path": "src/ara/forge/phases/seal.py",
+          "symbol": "validate_manifest_coverage",
+          "line": 107
+        },
+        {
+          "path": "src/ara/forge/phases/seal.py",
+          "symbol": "validate_citation_integrity",
+          "line": 119
+        }
+      ]
+    },
+    {
+      "title": "Retrieval verification",
+      "description": "Calibration is an explicit retrieval verification command.",
+      "mechanism": "run_calibration over SearchDispatcher",
+      "source": [
+        {
+          "path": "src/ara/weapon_cli.py",
+          "symbol": "_cmd_calibrate",
+          "line": 121
+        },
+        {
+          "path": "src/ara/forge/index/calibration.py",
+          "symbol": "run_calibration",
+          "line": 70
+        },
+        {
+          "path": "src/ara/forge/index/dispatcher.py",
+          "symbol": "search",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "title": "Indexed method knowledge",
+      "description": "Search uses SQLite FTS5,stemming,BM25 and optional query synonyms.",
+      "mechanism": "FTSIndex search",
+      "source": [
+        {
+          "path": "src/ara/forge/index/builder.py",
+          "symbol": "FTSIndex",
+          "line": 51
+        },
+        {
+          "path": "src/ara/forge/index/dispatcher.py",
+          "symbol": "search",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "title": "Loadout preflight",
+      "description": "Run Task checks active equipment, active-testing permission, and the applicable end time.",
+      "mechanism": "check_active_trim_for_task",
+      "source": [
+        {
+          "path": "src/ara/task_preflight.py",
+          "symbol": "check_active_trim_for_task",
+          "line": 25
+        },
+        {
+          "path": "src/ara/armory/app.py",
+          "symbol": "_start_task_session",
+          "line": 1084
+        }
+      ]
+    },
+    {
+      "title": "Persistent task obligations",
+      "description": "Task debt holds applicable queried process launches and browser navigation until its obligations clear.",
+      "mechanism": "TaskRunSession.record_action/record_commit",
+      "source": [
+        {
+          "path": "src/ara/task_session.py",
+          "symbol": "record_action",
+          "line": 173
+        },
+        {
+          "path": "src/ara/task_session.py",
+          "symbol": "record_commit",
+          "line": 273
+        },
+        {
+          "path": "src/ara/task_session.py",
+          "symbol": "current_loadout_matches",
+          "line": 415
+        }
+      ]
+    },
+    {
+      "title": "Durable Hermes loop",
+      "description": "Armory default Hermes worker runs a persistent controlled loop.",
+      "mechanism": "_build_durable_hermes_worker and ara launch",
+      "source": [
+        {
+          "path": "src/ara/armory/app.py",
+          "symbol": "_build_durable_hermes_worker",
+          "line": 403
+        },
+        {
+          "path": "src/ara/armory/app.py",
+          "symbol": "_start_task_session",
+          "line": 1084
+        },
+        {
+          "path": "src/ara/task_repair.py",
+          "symbol": "repair_commit_debt",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "title": "Contained worker launch",
+      "description": "Session launch prepares directories, guard environment, proxy configuration, and the selected worker.",
+      "mechanism": "launch and build_contained_env",
+      "source": [
+        {
+          "path": "src/ara/launch.py",
+          "symbol": "launch",
+          "line": 94
+        },
+        {
+          "path": "src/ara/containment.py",
+          "symbol": "build_contained_env",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "title": "Scoped resource policy",
+      "description": "Bulwark selects deny/approval/allow by scoped precedence.",
+      "mechanism": "_evaluate_bulwark and evaluate",
+      "source": [
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_query",
+          "line": 781
+        },
+        {
+          "path": "src/ara/bulwark.py",
+          "symbol": "evaluate",
+          "line": 820
+        }
+      ]
+    },
+    {
+      "title": "Operating contract",
+      "description": "Applicable Trim queries add window, stop, classification, and rate-denial checks; queue delay needs a consumer.",
+      "mechanism": "evaluate_call",
+      "source": [
+        {
+          "path": "src/ara/runtime/trim_gate.py",
+          "symbol": "evaluate_call",
+          "line": 109
+        },
+        {
+          "path": "src/ara/runtime/tod.py",
+          "symbol": "evaluate_gate",
+          "line": 376
+        },
+        {
+          "path": "src/ara/runtime/rate_bucket.py",
+          "symbol": "acquire",
+          "line": 223
+        }
+      ]
+    },
+    {
+      "title": "Approval decisions",
+      "description": "Approval outcomes depend on explicit operator and automation policy.",
+      "mechanism": "_on_query,wait_for_resolution",
+      "source": [
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_query",
+          "line": 781
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_shadow_attest_danger",
+          "line": 1095
+        },
+        {
+          "path": "src/ara/approvals.py",
+          "symbol": "wait_for_resolution",
+          "line": 265
+        }
+      ]
+    },
+    {
+      "title": "Instruction envelope",
+      "description": "ABSOLUTE composes armor and Temper instructions per model request.",
+      "mechanism": "active_absolute_rule,apply_rewrite_spec",
+      "source": [
+        {
+          "path": "src/ara/_rhema_shim.py",
+          "symbol": "active_absolute_rule",
+          "line": 242
+        },
+        {
+          "path": "src/ara/_rhema_shim.py",
+          "symbol": "apply_rewrite_spec",
+          "line": 165
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_try_apply_request_rewrite",
+          "line": 1594
+        }
+      ]
+    },
+    {
+      "title": "Canary controls",
+      "description": "Canary values can be detected and blocked by a matching reply rule.",
+      "mechanism": "canary scan and proxy reply Bulwark check",
+      "source": [
+        {
+          "path": "src/ara/canary.py",
+          "symbol": "add",
+          "line": 188
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_check_canaries_in_reply",
+          "line": 1244
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_try_enforce_bulwark_response",
+          "line": 1289
+        }
+      ]
+    },
+    {
+      "title": "Shadow comparison",
+      "description": "Shadow comparison runs an alternate model request; armor shadow mode changes deny behavior.",
+      "mechanism": "_dispatch_shadow and supervisor shadow branch",
+      "source": [
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_dispatch_shadow",
+          "line": 2443
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_query",
+          "line": 781
+        }
+      ]
+    },
+    {
+      "title": "Procedure graph",
+      "description": "Chunk graph controls available channels and allowed transitions.",
+      "mechanism": "ChunkRuntime.emit_tag and supervisor surface check",
+      "source": [
+        {
+          "path": "src/ara/runtime/chunks/runtime.py",
+          "symbol": "emit_tag",
+          "line": 202
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_channel_call",
+          "line": 1549
+        },
+        {
+          "path": "src/ara/runtime/activation.py",
+          "symbol": "mint",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "title": "Phase inhibition",
+      "description": "Chunk gems provide phase-dependent inhibition profiles.",
+      "mechanism": "resolve_inhibition_profile,_apply_inhibition_to_payload",
+      "source": [
+        {
+          "path": "src/ara/runtime/chunks/inhibition.py",
+          "symbol": "resolve_inhibition_profile",
+          "line": 50
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_apply_inhibition_to_payload",
+          "line": 452
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_reply_deny_relaxed_by_inhibition",
+          "line": 1358
+        }
+      ]
+    },
+    {
+      "title": "Knowledge-gap API",
+      "description": "Crumb intent has an available fact-coverage consultation API.",
+      "mechanism": "has_sufficient_coverage and CrumbIntentChannel",
+      "source": [
+        {
+          "path": "src/ara/runtime/chunks/crumb_intent.py",
+          "symbol": "CrumbIntentChannel",
+          "line": 58
+        },
+        {
+          "path": "src/ara/runtime/knowledge_gap.py",
+          "symbol": "has_sufficient_coverage",
+          "line": 58
+        },
+        {
+          "path": "src/ara/runtime/bootstrap.py",
+          "symbol": "install_engagement",
+          "line": 175
+        }
+      ]
+    },
+    {
+      "title": "Evidence bytes",
+      "description": "Evidence Binder stores bytes by SHA256 with searchable source metadata.",
+      "mechanism": "EvidenceBinder.put and ContentStore",
+      "source": [
+        {
+          "path": "src/ara/runtime/binder/api.py",
+          "symbol": "put",
+          "line": 44
+        },
+        {
+          "path": "src/ara/runtime/binder/tool_capture.py",
+          "symbol": "capture_tool_exchanges",
+          "line": 108
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_capture_evidence",
+          "line": 2396
+        }
+      ]
+    },
+    {
+      "title": "Grounded observations",
+      "description": "Facts trace to evidence or existing facts.",
+      "mechanism": "FactAssertChannel.validate/execute",
+      "source": [
+        {
+          "path": "src/ara/runtime/facts/channels.py",
+          "symbol": "FactAssertChannel",
+          "line": 68
+        },
+        {
+          "path": "src/ara/runtime/provenance.py",
+          "symbol": "enrich_evidence",
+          "line": 84
+        },
+        {
+          "path": "src/ara/runtime/facts/neighbors.py",
+          "symbol": "NeighborIndex",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "title": "Investigation ledger",
+      "description": "Leads combine computed priority,review history and retrievability decay.",
+      "mechanism": "compute_priority,apply_action",
+      "source": [
+        {
+          "path": "src/ara/runtime/leads/priority.py",
+          "symbol": "compute_priority",
+          "line": 57
+        },
+        {
+          "path": "src/ara/runtime/leads/decay.py",
+          "symbol": "retrievability",
+          "line": 53
+        },
+        {
+          "path": "src/ara/runtime/leads/closure_gate.py",
+          "symbol": "check_closure",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "title": "Expected-shape checks",
+      "description": "Anomaly checks compare captured bytes to the active crumb shape.",
+      "mechanism": "AnomalyAutoFirer.on_evidence,compute_divergence",
+      "source": [
+        {
+          "path": "src/ara/runtime/anomaly/autofire.py",
+          "symbol": "on_evidence",
+          "line": 79
+        },
+        {
+          "path": "src/ara/runtime/anomaly/divergence.py",
+          "symbol": "compute_divergence",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "title": "Claim checks",
+      "description": "Finding file checks referenced evidence and explicit/derived claim markers.",
+      "mechanism": "validate_for_draft,_rule_claim_verification",
+      "source": [
+        {
+          "path": "src/ara/runtime/findings/channels.py",
+          "symbol": "FindingFileChannel",
+          "line": 333
+        },
+        {
+          "path": "src/ara/runtime/findings/validator.py",
+          "symbol": "_rule_claim_verification",
+          "line": 367
+        },
+        {
+          "path": "src/ara/runtime/findings/field_store.py",
+          "symbol": "record_finding_fields",
+          "line": 75
+        }
+      ]
+    },
+    {
+      "title": "Operator acceptance",
+      "description": "Operator signoff applies stronger content and evidence requirements.",
+      "mechanism": "validate_for_signoff and allowed_callers operator",
+      "source": [
+        {
+          "path": "src/ara/runtime/findings/channels.py",
+          "symbol": "FindingSignOffChannel",
+          "line": 486
+        },
+        {
+          "path": "src/ara/runtime/findings/validator.py",
+          "symbol": "validate_for_signoff",
+          "line": 662
+        }
+      ]
+    },
+    {
+      "title": "Reviewed report",
+      "description": "Report Kiln renders signed-off findings with evidence and coverage sections.",
+      "mechanism": "ReportRenderChannel and render_report",
+      "source": [
+        {
+          "path": "src/ara/runtime/report/channels.py",
+          "symbol": "ReportRenderChannel",
+          "line": 25
+        },
+        {
+          "path": "src/ara/runtime/report/kiln.py",
+          "symbol": "render_report",
+          "line": 119
+        },
+        {
+          "path": "src/ara/runtime/style/channels.py",
+          "symbol": "StyleScoreChannel",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "title": "Reference-run comparison",
+      "description": "Baseline captures observed resources and can generate an armor.",
+      "mechanism": "baseline extraction/diff/materialization",
+      "source": [
+        {
+          "path": "src/ara/baseline.py",
+          "symbol": "record_from_session",
+          "line": 135
+        },
+        {
+          "path": "src/ara/baseline.py",
+          "symbol": "diff_against_session",
+          "line": 162
+        },
+        {
+          "path": "src/ara/baseline.py",
+          "symbol": "to_armor",
+          "line": 222
+        }
+      ]
+    },
+    {
+      "title": "Archive attestation",
+      "description": "Session export includes audit attestation and detached shared-secret HMAC.",
+      "mechanism": "verify_chain,build_session_export_signature",
+      "source": [
+        {
+          "path": "src/ara/armory/app.py",
+          "symbol": "build_session_export",
+          "line": 1414
+        },
+        {
+          "path": "src/ara/armory/app.py",
+          "symbol": "build_session_export_signature",
+          "line": 1506
+        }
+      ]
+    },
+    {
+      "title": "Reviewed evolution",
+      "description": "Review can lead to focused investigation,baseline policy and versioned reforge.",
+      "mechanism": "_start_polish_task,reforge proposal approval",
+      "source": [
+        {
+          "path": "src/ara/armory/app.py",
+          "symbol": "_start_polish_task",
+          "line": 1025
+        },
+        {
+          "path": "src/ara/armory/polish.py",
+          "symbol": "build_directive",
+          "line": 154
+        },
+        {
+          "path": "src/ara/forge/reforge/driver.py",
+          "symbol": "propose",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "title": "Contained Hermes gateway reconciliation",
+      "description": "The gateway guard detects uncontained Hermes gateways and reconciles the configured contained service.",
+      "mechanism": "Process ancestry checks,service-unit reconciliation,and circuit-breaker state",
+      "source": [
+        {
+          "path": "src/ara/hermes_guard.py",
+          "symbol": "find_uncontained_hermes",
+          "line": 86
+        },
+        {
+          "path": "src/ara/hermes_guard.py",
+          "symbol": "run_reconcile",
+          "line": 329
+        },
+        {
+          "path": "src/ara/armory/app.py",
+          "symbol": "start_hermes_guard_thread",
+          "line": 1384
+        }
+      ]
+    },
+    {
+      "title": "Skill change observation",
+      "description": "Skill snapshots identify added,removed,and modified configured skill directories.",
+      "mechanism": "Directory fingerprints and snapshot comparison",
+      "source": [
+        {
+          "path": "src/ara/skill_watch.py",
+          "symbol": "scan",
+          "line": 246
+        },
+        {
+          "path": "src/ara/skill_watch.py",
+          "symbol": "changes_to_events",
+          "line": 259
+        }
+      ]
+    },
+    {
+      "title": "Optional MCP traffic scanner",
+      "description": "An installed MCP scanner can send findings into the ARA event stream.",
+      "mechanism": "External scanner process and finding parser",
+      "source": [
+        {
+          "path": "src/ara/mcp_scan.py",
+          "symbol": "run_static_scan",
+          "line": 93
+        },
+        {
+          "path": "src/ara/mcp_scan.py",
+          "symbol": "launch_proxy_sidecar",
+          "line": 117
+        }
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "id": "source-to-seal",
+      "title": "Source material to sealed capability",
+      "summary": "Forge preserves selected source identities through extraction, review, synthesis, and seal.",
+      "steps": [
+        {
+          "title": "Deposit materials",
+          "detail": "The operator supplies approved files and their source identity.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/deposit.py",
+              "symbol": "deposit_mat",
+              "line": 45
+            },
+            {
+              "path": "src/ara/forge/phases/manifest.py",
+              "symbol": "run_manifest",
+              "line": 27
+            },
+            {
+              "path": "src/ara/forge/manifest/element.py",
+              "symbol": "make_element_id",
+              "line": 61
+            }
+          ]
+        },
+        {
+          "title": "Enumerate source elements",
+          "detail": "Format extraction records text, identity, ranges, hashes, and metadata.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/deposit.py",
+              "symbol": "deposit_mat",
+              "line": 45
+            },
+            {
+              "path": "src/ara/forge/phases/manifest.py",
+              "symbol": "run_manifest",
+              "line": 27
+            },
+            {
+              "path": "src/ara/forge/manifest/element.py",
+              "symbol": "make_element_id",
+              "line": 61
+            }
+          ]
+        },
+        {
+          "title": "Review and select",
+          "detail": "The operator excludes irrelevant elements and approves the manifest.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/manifest.py",
+              "symbol": "_merge_with_prior_drops",
+              "line": 70
+            },
+            {
+              "path": "src/ara/forge/phases/exhaust.py",
+              "symbol": "record_extraction",
+              "line": 65
+            }
+          ]
+        },
+        {
+          "title": "Install the creation loadout",
+          "detail": "Blacksmith and Hammer or Codex and Pen supply the selected authoring surface.",
+          "source": [
+            {
+              "path": "src/ara/forge/loop_driver.py",
+              "symbol": "run_exhaust",
+              "line": 292
+            },
+            {
+              "path": "src/ara/forge/loop_driver.py",
+              "symbol": "run_exhaust_stateless",
+              "line": 1017
+            },
+            {
+              "path": "src/ara/forge/phases/exhaust.py",
+              "symbol": "record_extraction",
+              "line": 65
+            },
+            {
+              "path": "src/ara/forge/alphabets/pack.py",
+              "symbol": "AlphabetPack",
+              "line": 131
+            },
+            {
+              "path": "src/ara/forge/pack_draft.py",
+              "symbol": "build_pack_draft",
+              "line": 182
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "seal_pack",
+              "line": 230
+            }
+          ]
+        },
+        {
+          "title": "Extract structured content",
+          "detail": "Typed channels attach structured bodies to source elements.",
+          "source": [
+            {
+              "path": "src/ara/forge/loop_driver.py",
+              "symbol": "run_exhaust",
+              "line": 292
+            },
+            {
+              "path": "src/ara/forge/loop_driver.py",
+              "symbol": "run_exhaust_stateless",
+              "line": 1017
+            },
+            {
+              "path": "src/ara/forge/phases/exhaust.py",
+              "symbol": "record_extraction",
+              "line": 65
+            }
+          ]
+        },
+        {
+          "title": "Inspect coverage",
+          "detail": "Coverage accounts for included elements and unresolved work.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "seal",
+              "line": 266
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "validate_manifest_coverage",
+              "line": 107
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "validate_citation_integrity",
+              "line": 119
+            }
+          ]
+        },
+        {
+          "title": "Project domain structure",
+          "detail": "Synthesis groups components and checks alphabet relationships.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/synthesize.py",
+              "symbol": "synthesize",
+              "line": 223
+            },
+            {
+              "path": "src/ara/forge/alphabets/projector.py",
+              "symbol": "project",
+              "line": 255
+            },
+            {
+              "path": "src/ara/forge/alphabets/pack.py",
+              "symbol": "AlphabetPack",
+              "line": 131
+            },
+            {
+              "path": "src/ara/forge/pack_draft.py",
+              "symbol": "build_pack_draft",
+              "line": 182
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "seal_pack",
+              "line": 230
+            }
+          ]
+        },
+        {
+          "title": "Resolve conflicts",
+          "detail": "The operator reviews explicit conflicts and draft changes.",
+          "source": [
+            {
+              "path": "src/ara/forge/reconcile.py",
+              "symbol": "detect_conflict_groups",
+              "line": 129
+            },
+            {
+              "path": "src/ara/forge/reconcile.py",
+              "symbol": "apply_decision",
+              "line": 218
+            }
+          ]
+        },
+        {
+          "title": "Seal the reviewed artifact",
+          "detail": "Validation writes the method, policy, graph, vocabularies, and seal metadata.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "seal",
+              "line": 266
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "validate_manifest_coverage",
+              "line": 107
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "validate_citation_integrity",
+              "line": 119
+            }
+          ]
+        },
+        {
+          "title": "Verify retrieval",
+          "detail": "The operator runs representative calibration queries against the sealed index.",
+          "source": [
+            {
+              "path": "src/ara/weapon_cli.py",
+              "symbol": "_cmd_calibrate",
+              "line": 121
+            },
+            {
+              "path": "src/ara/forge/index/calibration.py",
+              "symbol": "run_calibration",
+              "line": 70
+            },
+            {
+              "path": "src/ara/forge/index/dispatcher.py",
+              "symbol": "search",
+              "line": 55
+            },
+            {
+              "path": "src/ara/forge/index/builder.py",
+              "symbol": "FTSIndex",
+              "line": 51
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "engagement-to-task",
+      "title": "Engagement intent to supervised task",
+      "summary": "A complete loadout binds identity, method, scope, and hardening to a persistent run.",
+      "steps": [
+        {
+          "title": "Prepare KEEP",
+          "detail": "Classified materials and canonical intake establish the engagement workspace.",
+          "source": [
+            {
+              "path": "src/ara/engagement_mats.py",
+              "symbol": "ensure_engagement",
+              "line": 125
+            },
+            {
+              "path": "src/ara/engagement_mats.py",
+              "symbol": "add_mat_bytes",
+              "line": 235
+            },
+            {
+              "path": "src/ara/engagement_mats.py",
+              "symbol": "set_mat_selected",
+              "line": 347
+            }
+          ]
+        },
+        {
+          "title": "Select identity",
+          "detail": "The operator selects a persistent armor and instruction variant.",
+          "source": [
+            {
+              "path": "src/ara/armors.py",
+              "symbol": "set_active_armor",
+              "line": 371
+            },
+            {
+              "path": "src/ara/armors.py",
+              "symbol": "load_armor",
+              "line": 436
+            }
+          ]
+        },
+        {
+          "title": "Select method",
+          "detail": "A sealed weapon supplies the reviewed procedure and runtime data.",
+          "source": [
+            {
+              "path": "src/ara/weapons.py",
+              "symbol": "equip_policy",
+              "line": 209
+            },
+            {
+              "path": "src/ara/weapons.py",
+              "symbol": "unequip_policy",
+              "line": 252
+            },
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_maybe_install_engagement",
+              "line": 1514
+            }
+          ]
+        },
+        {
+          "title": "Derive engagement context",
+          "detail": "Sew converts operator intake into a Trim.",
+          "source": [
+            {
+              "path": "src/ara/armory/trim_views.py",
+              "symbol": "parse_derive_form",
+              "line": 573
+            },
+            {
+              "path": "src/ara/trims.py",
+              "symbol": "derive_trim",
+              "line": 806
+            },
+            {
+              "path": "src/ara/trims.py",
+              "symbol": "apply_trim",
+              "line": 643
+            }
+          ]
+        },
+        {
+          "title": "Apply scope",
+          "detail": "Marked Trim policy and instructions carry target and operating context.",
+          "source": [
+            {
+              "path": "src/ara/armory/trim_views.py",
+              "symbol": "parse_derive_form",
+              "line": 573
+            },
+            {
+              "path": "src/ara/trims.py",
+              "symbol": "derive_trim",
+              "line": 806
+            },
+            {
+              "path": "src/ara/trims.py",
+              "symbol": "apply_trim",
+              "line": 643
+            },
+            {
+              "path": "src/ara/runtime/trim_gate.py",
+              "symbol": "evaluate_call",
+              "line": 109
+            },
+            {
+              "path": "src/ara/runtime/tod.py",
+              "symbol": "evaluate_gate",
+              "line": 376
+            },
+            {
+              "path": "src/ara/runtime/rate_bucket.py",
+              "symbol": "acquire",
+              "line": 223
+            }
+          ]
+        },
+        {
+          "title": "Equip hardening",
+          "detail": "The reviewed Temper package adds reusable doctrine and policy.",
+          "source": [
+            {
+              "path": "src/ara/armory/temper_views.py",
+              "symbol": "handle_temper_create",
+              "line": 498
+            },
+            {
+              "path": "src/ara/armory/temper_views.py",
+              "symbol": "handle_temper_tailor_start",
+              "line": 549
+            },
+            {
+              "path": "src/ara/tempers.py",
+              "symbol": "ingest",
+              "line": 118
+            },
+            {
+              "path": "src/ara/tempers.py",
+              "symbol": "equip",
+              "line": 247
+            }
+          ]
+        },
+        {
+          "title": "Check prerequisites",
+          "detail": "Preflight checks complete equipment, active permission, and applicable expiry.",
+          "source": [
+            {
+              "path": "src/ara/task_preflight.py",
+              "symbol": "check_active_trim_for_task",
+              "line": 25
+            },
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_task_session",
+              "line": 1084
+            }
+          ]
+        },
+        {
+          "title": "Bind the run",
+          "detail": "Task state records equipment identities, hashes, and progress budgets.",
+          "source": [
+            {
+              "path": "src/ara/task_session.py",
+              "symbol": "record_action",
+              "line": 173
+            },
+            {
+              "path": "src/ara/task_session.py",
+              "symbol": "record_commit",
+              "line": 273
+            },
+            {
+              "path": "src/ara/task_session.py",
+              "symbol": "current_loadout_matches",
+              "line": 415
+            }
+          ]
+        },
+        {
+          "title": "Prepare runtime",
+          "detail": "The launcher creates worker directories, IPC, guards, and proxy configuration.",
+          "source": [
+            {
+              "path": "src/ara/launch.py",
+              "symbol": "launch",
+              "line": 94
+            },
+            {
+              "path": "src/ara/containment.py",
+              "symbol": "build_contained_env",
+              "line": 73
+            }
+          ]
+        },
+        {
+          "title": "Continue through Hermes",
+          "detail": "The default worker loop continues with task obligations and recorded progress.",
+          "source": [
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_build_durable_hermes_worker",
+              "line": 403
+            },
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_task_session",
+              "line": 1084
+            },
+            {
+              "path": "src/ara/task_repair.py",
+              "symbol": "repair_commit_debt",
+              "line": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "operation-to-decision",
+      "title": "Operation to recorded decision",
+      "summary": "Trace a submitted operation query through its supervisor decisions. Local resource matches use their own consumer paths.",
+      "steps": [
+        {
+          "title": "Request an operation",
+          "detail": "The selected tool or worker initiates an operation.",
+          "source": [
+            {
+              "path": "src/ara/launch.py",
+              "symbol": "launch",
+              "line": 94
+            },
+            {
+              "path": "src/ara/containment.py",
+              "symbol": "build_contained_env",
+              "line": 73
+            }
+          ]
+        },
+        {
+          "title": "Intercept the supported call",
+          "detail": "A supported querying consumer submits the operation. Native and Node local matches can decide without this round trip.",
+          "source": [
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_on_query",
+              "line": 781
+            },
+            {
+              "path": "src/ara/bulwark.py",
+              "symbol": "evaluate",
+              "line": 820
+            }
+          ]
+        },
+        {
+          "title": "Evaluate resource policy",
+          "detail": "Bulwark selects the scoped rule by precedence.",
+          "source": [
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_on_query",
+              "line": 781
+            },
+            {
+              "path": "src/ara/bulwark.py",
+              "symbol": "evaluate",
+              "line": 820
+            }
+          ]
+        },
+        {
+          "title": "Apply engagement controls",
+          "detail": "The Trim gate evaluates windows, stop state, classification, and cadence.",
+          "source": [
+            {
+              "path": "src/ara/runtime/trim_gate.py",
+              "symbol": "evaluate_call",
+              "line": 109
+            },
+            {
+              "path": "src/ara/runtime/tod.py",
+              "symbol": "evaluate_gate",
+              "line": 376
+            },
+            {
+              "path": "src/ara/runtime/rate_bucket.py",
+              "symbol": "acquire",
+              "line": 223
+            }
+          ]
+        },
+        {
+          "title": "Check task obligations",
+          "detail": "Further target actions can wait for commit, branch, or verification debt.",
+          "source": [
+            {
+              "path": "src/ara/task_session.py",
+              "symbol": "record_action",
+              "line": 173
+            },
+            {
+              "path": "src/ara/task_session.py",
+              "symbol": "record_commit",
+              "line": 273
+            },
+            {
+              "path": "src/ara/task_session.py",
+              "symbol": "current_loadout_matches",
+              "line": 415
+            }
+          ]
+        },
+        {
+          "title": "Classify danger",
+          "detail": "The supervisor applies recognized danger rules and eligibility.",
+          "source": [
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_on_query",
+              "line": 781
+            },
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_shadow_attest_danger",
+              "line": 1095
+            },
+            {
+              "path": "src/ara/approvals.py",
+              "symbol": "wait_for_resolution",
+              "line": 265
+            }
+          ]
+        },
+        {
+          "title": "Resolve approval",
+          "detail": "Operator decisions and configured automation resolve pending operations.",
+          "source": [
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_on_query",
+              "line": 781
+            },
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_shadow_attest_danger",
+              "line": 1095
+            },
+            {
+              "path": "src/ara/approvals.py",
+              "symbol": "wait_for_resolution",
+              "line": 265
+            }
+          ]
+        },
+        {
+          "title": "Apply observation mode",
+          "detail": "Selected shadow settings determine recorded would-deny behavior.",
+          "source": [
+            {
+              "path": "src/ara/mitm_proxy.py",
+              "symbol": "_dispatch_shadow",
+              "line": 2443
+            },
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_on_query",
+              "line": 781
+            }
+          ]
+        },
+        {
+          "title": "Return the decision",
+          "detail": "The runtime receives the final operation verdict.",
+          "source": [
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_on_query",
+              "line": 781
+            },
+            {
+              "path": "src/ara/bulwark.py",
+              "symbol": "evaluate",
+              "line": 820
+            }
+          ]
+        },
+        {
+          "title": "Preserve the event",
+          "detail": "Policy records and capture paths preserve the result for examination.",
+          "source": [
+            {
+              "path": "src/ara/runtime/binder/api.py",
+              "symbol": "put",
+              "line": 44
+            },
+            {
+              "path": "src/ara/runtime/binder/tool_capture.py",
+              "symbol": "capture_tool_exchanges",
+              "line": 108
+            },
+            {
+              "path": "src/ara/mitm_proxy.py",
+              "symbol": "_capture_evidence",
+              "line": 2396
+            },
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "build_session_export",
+              "line": 1414
+            },
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "build_session_export_signature",
+              "line": 1506
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence-to-report",
+      "title": "Captured observation to reviewed report",
+      "summary": "Separate evidence, interpretation, and operator acceptance make each result reviewable.",
+      "steps": [
+        {
+          "title": "Capture a result",
+          "detail": "Supported tool, proxy, or native output captures provide observation bytes.",
+          "source": [
+            {
+              "path": "src/ara/runtime/binder/api.py",
+              "symbol": "put",
+              "line": 44
+            },
+            {
+              "path": "src/ara/runtime/binder/tool_capture.py",
+              "symbol": "capture_tool_exchanges",
+              "line": 108
+            },
+            {
+              "path": "src/ara/mitm_proxy.py",
+              "symbol": "_capture_evidence",
+              "line": 2396
+            }
+          ]
+        },
+        {
+          "title": "Store and identify content",
+          "detail": "The Binder hashes bytes and records source and activation metadata.",
+          "source": [
+            {
+              "path": "src/ara/runtime/binder/api.py",
+              "symbol": "put",
+              "line": 44
+            },
+            {
+              "path": "src/ara/runtime/binder/tool_capture.py",
+              "symbol": "capture_tool_exchanges",
+              "line": 108
+            },
+            {
+              "path": "src/ara/mitm_proxy.py",
+              "symbol": "_capture_evidence",
+              "line": 2396
+            }
+          ]
+        },
+        {
+          "title": "Record an observation",
+          "detail": "A fact cites evidence or existing facts.",
+          "source": [
+            {
+              "path": "src/ara/runtime/facts/channels.py",
+              "symbol": "FactAssertChannel",
+              "line": 68
+            },
+            {
+              "path": "src/ara/runtime/provenance.py",
+              "symbol": "enrich_evidence",
+              "line": 84
+            },
+            {
+              "path": "src/ara/runtime/facts/neighbors.py",
+              "symbol": "NeighborIndex",
+              "line": 29
+            }
+          ]
+        },
+        {
+          "title": "Preserve an open question",
+          "detail": "A lead holds investigation state, priority, and review history.",
+          "source": [
+            {
+              "path": "src/ara/runtime/leads/priority.py",
+              "symbol": "compute_priority",
+              "line": 57
+            },
+            {
+              "path": "src/ara/runtime/leads/decay.py",
+              "symbol": "retrievability",
+              "line": 53
+            },
+            {
+              "path": "src/ara/runtime/leads/closure_gate.py",
+              "symbol": "check_closure",
+              "line": 26
+            }
+          ]
+        },
+        {
+          "title": "Compare expected shape",
+          "detail": "When active context exists, divergence can create an anomaly.",
+          "source": [
+            {
+              "path": "src/ara/runtime/anomaly/autofire.py",
+              "symbol": "on_evidence",
+              "line": 79
+            },
+            {
+              "path": "src/ara/runtime/anomaly/divergence.py",
+              "symbol": "compute_divergence",
+              "line": 30
+            }
+          ]
+        },
+        {
+          "title": "File the claim",
+          "detail": "Finding checks inspect references and applicable content conditions.",
+          "source": [
+            {
+              "path": "src/ara/runtime/findings/channels.py",
+              "symbol": "FindingFileChannel",
+              "line": 333
+            },
+            {
+              "path": "src/ara/runtime/findings/validator.py",
+              "symbol": "_rule_claim_verification",
+              "line": 367
+            },
+            {
+              "path": "src/ara/runtime/findings/field_store.py",
+              "symbol": "record_finding_fields",
+              "line": 75
+            }
+          ]
+        },
+        {
+          "title": "Review the result",
+          "detail": "Spoils permits operator edits, dispositions, and evidence attachments.",
+          "source": [
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_polish_task",
+              "line": 1025
+            },
+            {
+              "path": "src/ara/armory/polish.py",
+              "symbol": "build_directive",
+              "line": 154
+            },
+            {
+              "path": "src/ara/forge/reforge/driver.py",
+              "symbol": "propose",
+              "line": 55
+            },
+            {
+              "path": "src/ara/runtime/findings/channels.py",
+              "symbol": "FindingSignOffChannel",
+              "line": 486
+            },
+            {
+              "path": "src/ara/runtime/findings/validator.py",
+              "symbol": "validate_for_signoff",
+              "line": 662
+            }
+          ]
+        },
+        {
+          "title": "Complete focused work",
+          "detail": "A bounded task can reproduce, challenge, or improve one selected record.",
+          "source": [
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_polish_task",
+              "line": 1025
+            },
+            {
+              "path": "src/ara/armory/polish.py",
+              "symbol": "build_directive",
+              "line": 154
+            },
+            {
+              "path": "src/ara/forge/reforge/driver.py",
+              "symbol": "propose",
+              "line": 55
+            }
+          ]
+        },
+        {
+          "title": "Sign off supported output",
+          "detail": "The operator satisfies stronger impact, fix, asset, confirmation, and evidence requirements.",
+          "source": [
+            {
+              "path": "src/ara/runtime/findings/channels.py",
+              "symbol": "FindingSignOffChannel",
+              "line": 486
+            },
+            {
+              "path": "src/ara/runtime/findings/validator.py",
+              "symbol": "validate_for_signoff",
+              "line": 662
+            }
+          ]
+        },
+        {
+          "title": "Render the report",
+          "detail": "The Report Kiln selects signed-off findings and writes sections with diagnostics.",
+          "source": [
+            {
+              "path": "src/ara/runtime/report/channels.py",
+              "symbol": "ReportRenderChannel",
+              "line": 25
+            },
+            {
+              "path": "src/ara/runtime/report/kiln.py",
+              "symbol": "render_report",
+              "line": 119
+            },
+            {
+              "path": "src/ara/runtime/style/channels.py",
+              "symbol": "StyleScoreChannel",
+              "line": 21
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "review-to-growth",
+      "title": "Reviewed result to reusable improvement",
+      "summary": "Method and hardening changes remain explicit artifacts selected by the operator.",
+      "steps": [
+        {
+          "title": "Inspect reviewed work",
+          "detail": "The operator identifies a useful correction or recurring control need.",
+          "source": [
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_polish_task",
+              "line": 1025
+            },
+            {
+              "path": "src/ara/armory/polish.py",
+              "symbol": "build_directive",
+              "line": 154
+            },
+            {
+              "path": "src/ara/forge/reforge/driver.py",
+              "symbol": "propose",
+              "line": 55
+            }
+          ]
+        },
+        {
+          "title": "Request focused investigation",
+          "detail": "A bounded objective reuses relevant session records.",
+          "source": [
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_polish_task",
+              "line": 1025
+            },
+            {
+              "path": "src/ara/armory/polish.py",
+              "symbol": "build_directive",
+              "line": 154
+            },
+            {
+              "path": "src/ara/forge/reforge/driver.py",
+              "symbol": "propose",
+              "line": 55
+            }
+          ]
+        },
+        {
+          "title": "Examine the resulting evidence",
+          "detail": "Captured content and changed records remain available for review.",
+          "source": [
+            {
+              "path": "src/ara/runtime/binder/api.py",
+              "symbol": "put",
+              "line": 44
+            },
+            {
+              "path": "src/ara/runtime/binder/tool_capture.py",
+              "symbol": "capture_tool_exchanges",
+              "line": 108
+            },
+            {
+              "path": "src/ara/mitm_proxy.py",
+              "symbol": "_capture_evidence",
+              "line": 2396
+            },
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_polish_task",
+              "line": 1025
+            },
+            {
+              "path": "src/ara/armory/polish.py",
+              "symbol": "build_directive",
+              "line": 154
+            },
+            {
+              "path": "src/ara/forge/reforge/driver.py",
+              "symbol": "propose",
+              "line": 55
+            }
+          ]
+        },
+        {
+          "title": "Capture a reference baseline",
+          "detail": "An observed resource set can become a comparison record.",
+          "source": [
+            {
+              "path": "src/ara/baseline.py",
+              "symbol": "record_from_session",
+              "line": 135
+            },
+            {
+              "path": "src/ara/baseline.py",
+              "symbol": "diff_against_session",
+              "line": 162
+            },
+            {
+              "path": "src/ara/baseline.py",
+              "symbol": "to_armor",
+              "line": 222
+            }
+          ]
+        },
+        {
+          "title": "Review baseline differences",
+          "detail": "The operator examines later resource changes and policy candidates.",
+          "source": [
+            {
+              "path": "src/ara/baseline.py",
+              "symbol": "record_from_session",
+              "line": 135
+            },
+            {
+              "path": "src/ara/baseline.py",
+              "symbol": "diff_against_session",
+              "line": 162
+            },
+            {
+              "path": "src/ara/baseline.py",
+              "symbol": "to_armor",
+              "line": 222
+            }
+          ]
+        },
+        {
+          "title": "Select reusable hardening",
+          "detail": "Reviewed control entries can become an equipped Temper package.",
+          "source": [
+            {
+              "path": "src/ara/armory/temper_views.py",
+              "symbol": "handle_temper_create",
+              "line": 498
+            },
+            {
+              "path": "src/ara/armory/temper_views.py",
+              "symbol": "handle_temper_tailor_start",
+              "line": 549
+            },
+            {
+              "path": "src/ara/tempers.py",
+              "symbol": "ingest",
+              "line": 118
+            },
+            {
+              "path": "src/ara/tempers.py",
+              "symbol": "equip",
+              "line": 247
+            },
+            {
+              "path": "src/ara/clients/temper_mcp_server.py",
+              "symbol": "call_tool",
+              "line": 514
+            },
+            {
+              "path": "src/ara/temper_lifecycle.py",
+              "symbol": "_validate_tailor_candidate",
+              "line": 195
+            },
+            {
+              "path": "src/ara/temper_lifecycle.py",
+              "symbol": "add_tailor_coverage_summary",
+              "line": 594
+            },
+            {
+              "path": "src/ara/temper_controls.py",
+              "symbol": "validate_control",
+              "line": 153
+            }
+          ]
+        },
+        {
+          "title": "Create a predecessor-based session",
+          "detail": "A new Forge session identifies the method it revises.",
+          "source": [
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_polish_task",
+              "line": 1025
+            },
+            {
+              "path": "src/ara/armory/polish.py",
+              "symbol": "build_directive",
+              "line": 154
+            },
+            {
+              "path": "src/ara/forge/reforge/driver.py",
+              "symbol": "propose",
+              "line": 55
+            }
+          ]
+        },
+        {
+          "title": "Build the revised draft",
+          "detail": "Current sources and typed extraction produce a candidate revision.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/synthesize.py",
+              "symbol": "synthesize",
+              "line": 223
+            },
+            {
+              "path": "src/ara/forge/alphabets/projector.py",
+              "symbol": "project",
+              "line": 255
+            }
+          ]
+        },
+        {
+          "title": "Approve typed differences",
+          "detail": "Reforge records additions, removals, modifications, and approval.",
+          "source": [
+            {
+              "path": "src/ara/armory/app.py",
+              "symbol": "_start_polish_task",
+              "line": 1025
+            },
+            {
+              "path": "src/ara/armory/polish.py",
+              "symbol": "build_directive",
+              "line": 154
+            },
+            {
+              "path": "src/ara/forge/reforge/driver.py",
+              "symbol": "propose",
+              "line": 55
+            }
+          ]
+        },
+        {
+          "title": "Seal and select for later use",
+          "detail": "The accepted revision enters the next task through explicit equipment selection.",
+          "source": [
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "seal",
+              "line": 266
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "validate_manifest_coverage",
+              "line": 107
+            },
+            {
+              "path": "src/ara/forge/phases/seal.py",
+              "symbol": "validate_citation_integrity",
+              "line": 119
+            },
+            {
+              "path": "src/ara/weapons.py",
+              "symbol": "equip_policy",
+              "line": 209
+            },
+            {
+              "path": "src/ara/weapons.py",
+              "symbol": "unequip_policy",
+              "line": 252
+            },
+            {
+              "path": "src/ara/supervisor.py",
+              "symbol": "_maybe_install_engagement",
+              "line": 1514
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "architecture": {
+    "nodes": [
+      {
+        "id": "operator",
+        "title": "Operator",
+        "role": "Owns intent, configuration, approvals, and accepted output.",
+        "layer": "authority",
+        "source": [
+          {
+            "path": "src/ara/supervisor.py",
+            "symbol": "_on_query",
+            "line": 781
+          },
+          {
+            "path": "src/ara/runtime/channels/base.py",
+            "symbol": "call",
+            "line": 90
+          },
+          {
+            "path": "src/ara/runtime/findings/channels.py",
+            "symbol": "FindingSignOffChannel",
+            "line": 486
+          },
+          {
+            "path": "src/ara/runtime/findings/validator.py",
+            "symbol": "validate_for_signoff",
+            "line": 662
+          }
+        ]
+      },
+      {
+        "id": "armory",
+        "title": "Armory and CLI",
+        "role": "Routes protected operator actions to shared state modules.",
+        "layer": "control",
+        "source": [
+          {
+            "path": "src/ara/task_preflight.py",
+            "symbol": "check_active_trim_for_task",
+            "line": 25
+          },
+          {
+            "path": "src/ara/armory/app.py",
+            "symbol": "_start_task_session",
+            "line": 1084
+          },
+          {
+            "path": "src/ara/armory/app.py",
+            "symbol": "_build_durable_hermes_worker",
+            "line": 403
+          },
+          {
+            "path": "src/ara/task_repair.py",
+            "symbol": "repair_commit_debt",
+            "line": 40
+          }
+        ]
+      },
+      {
+        "id": "keep",
+        "title": "KEEP and Sew",
+        "role": "Owns selected materials and engagement context.",
+        "layer": "preparation",
+        "source": [
+          {
+            "path": "src/ara/engagement_mats.py",
+            "symbol": "ensure_engagement",
+            "line": 125
+          },
+          {
+            "path": "src/ara/engagement_mats.py",
+            "symbol": "add_mat_bytes",
+            "line": 235
+          },
+          {
+            "path": "src/ara/engagement_mats.py",
+            "symbol": "set_mat_selected",
+            "line": 347
+          },
+          {
+            "path": "src/ara/armory/trim_views.py",
+            "symbol": "parse_derive_form",
+            "line": 573
+          },
+          {
+            "path": "src/ara/trims.py",
+            "symbol": "derive_trim",
+            "line": 806
+          },
+          {
+            "path": "src/ara/trims.py",
+            "symbol": "apply_trim",
+            "line": 643
+          }
+        ]
+      },
+      {
+        "id": "forge",
+        "title": "Forge",
+        "role": "Transforms reviewed source elements into capability drafts.",
+        "layer": "authoring",
+        "source": [
+          {
+            "path": "src/ara/forge/phases/deposit.py",
+            "symbol": "deposit_mat",
+            "line": 45
+          },
+          {
+            "path": "src/ara/forge/phases/manifest.py",
+            "symbol": "run_manifest",
+            "line": 27
+          },
+          {
+            "path": "src/ara/forge/manifest/element.py",
+            "symbol": "make_element_id",
+            "line": 61
+          },
+          {
+            "path": "src/ara/forge/loop_driver.py",
+            "symbol": "run_exhaust",
+            "line": 292
+          },
+          {
+            "path": "src/ara/forge/loop_driver.py",
+            "symbol": "run_exhaust_stateless",
+            "line": 1017
+          },
+          {
+            "path": "src/ara/forge/phases/exhaust.py",
+            "symbol": "record_extraction",
+            "line": 65
+          },
+          {
+            "path": "src/ara/forge/phases/synthesize.py",
+            "symbol": "synthesize",
+            "line": 223
+          },
+          {
+            "path": "src/ara/forge/alphabets/projector.py",
+            "symbol": "project",
+            "line": 255
+          }
+        ]
+      },
+      {
+        "id": "pack",
+        "title": "Packs",
+        "role": "Supply domain vocabularies, workflows, and policy defaults.",
+        "layer": "authoring",
+        "source": [
+          {
+            "path": "src/ara/forge/alphabets/pack.py",
+            "symbol": "AlphabetPack",
+            "line": 131
+          },
+          {
+            "path": "src/ara/forge/pack_draft.py",
+            "symbol": "build_pack_draft",
+            "line": 182
+          },
+          {
+            "path": "src/ara/forge/phases/seal.py",
+            "symbol": "seal_pack",
+            "line": 230
+          }
+        ]
+      },
+      {
+        "id": "equipment",
+        "title": "Equipment",
+        "role": "Combines Armor, Weapon, Trim, and Temper.",
+        "layer": "control",
+        "source": [
+          {
+            "path": "src/ara/armors.py",
+            "symbol": "set_active_armor",
+            "line": 371
+          },
+          {
+            "path": "src/ara/armors.py",
+            "symbol": "load_armor",
+            "line": 436
+          },
+          {
+            "path": "src/ara/weapons.py",
+            "symbol": "equip_policy",
+            "line": 209
+          },
+          {
+            "path": "src/ara/weapons.py",
+            "symbol": "unequip_policy",
+            "line": 252
+          },
+          {
+            "path": "src/ara/supervisor.py",
+            "symbol": "_maybe_install_engagement",
+            "line": 1514
+          },
+          {
+            "path": "src/ara/armory/trim_views.py",
+            "symbol": "parse_derive_form",
+            "line": 573
+          },
+          {
+            "path": "src/ara/trims.py",
+            "symbol": "derive_trim",
+            "line": 806
+          },
+          {
+            "path": "src/ara/trims.py",
+            "symbol": "apply_trim",
+            "line": 643
+          },
+          {
+            "path": "src/ara/armory/temper_views.py",
+            "symbol": "handle_temper_create",
+            "line": 498
+          },
+          {
+            "path": "src/ara/armory/temper_views.py",
+            "symbol": "handle_temper_tailor_start",
+            "line": 549
+          },
+          {
+            "path": "src/ara/tempers.py",
+            "symbol": "ingest",
+            "line": 118
+          },
+          {
+            "path": "src/ara/tempers.py",
+            "symbol": "equip",
+            "line": 247
+          }
+        ]
+      },
+      {
+        "id": "preflight",
+        "title": "Preflight",
+        "role": "Checks the current task prerequisites and binds equipment.",
+        "layer": "control",
+        "source": [
+          {
+            "path": "src/ara/task_preflight.py",
+            "symbol": "check_active_trim_for_task",
+            "line": 25
+          },
+          {
+            "path": "src/ara/armory/app.py",
+            "symbol": "_start_task_session",
+            "line": 1084
+          },
+          {
+            "path": "src/ara/task_session.py",
+            "symbol": "record_action",
+            "line": 173
+          },
+          {
+            "path": "src/ara/task_session.py",
+            "symbol": "record_commit",
+            "line": 273
+          },
+          {
+            "path": "src/ara/task_session.py",
+            "symbol": "current_loadout_matches",
+            "line": 415
+          }
+        ]
+      },
+      {
+        "id": "hermes",
+        "title": "Hermes task loop",
+        "role": "Continues task work with persistent progress obligations.",
+        "layer": "runtime",
+        "source": [
+          {
+            "path": "src/ara/armory/app.py",
+            "symbol": "_build_durable_hermes_worker",
+            "line": 403
+          },
+          {
+            "path": "src/ara/armory/app.py",
+            "symbol": "_start_task_session",
+            "line": 1084
+          },
+          {
+            "path": "src/ara/task_repair.py",
+            "symbol": "repair_commit_debt",
+            "line": 40
+          }
+        ]
+      },
+      {
+        "id": "supervisor",
+        "title": "Supervisor",
+        "role": "Evaluates operations and dispatches typed channels.",
+        "layer": "runtime",
+        "source": [
+          {
+            "path": "src/ara/supervisor.py",
+            "symbol": "_on_query",
+            "line": 781
+          },
+          {
+            "path": "src/ara/bulwark.py",
+            "symbol": "evaluate",
+            "line": 820
+          },
+          {
+            "path": "src/ara/runtime/channels/base.py",
+            "symbol": "call",
+            "line": 90
+          }
+        ]
+      },
+      {
+        "id": "proxy",
+        "title": "Model proxy and Rhema",
+        "role": "Inspects supported model traffic and composes instructions.",
+        "layer": "runtime",
+        "source": [
+          {
+            "path": "src/ara/_rhema_shim.py",
+            "symbol": "active_absolute_rule",
+            "line": 242
+          },
+          {
+            "path": "src/ara/_rhema_shim.py",
+            "symbol": "apply_rewrite_spec",
+            "line": 165
+          },
+          {
+            "path": "src/ara/mitm_proxy.py",
+            "symbol": "_try_apply_request_rewrite",
+            "line": 1594
+          },
+          {
+            "path": "src/ara/mitm_proxy.py",
+            "symbol": "_dispatch_shadow",
+            "line": 2443
+          },
+          {
+            "path": "src/ara/supervisor.py",
+            "symbol": "_on_query",
+            "line": 781
+          }
+        ]
+      },
+      {
+        "id": "guards",
+        "title": "Runtime interception",
+        "role": "Applies decisions through supported native, Node, and network paths.",
+        "layer": "runtime",
+        "source": [
+          {
+            "path": "src/ara/launch.py",
+            "symbol": "launch",
+            "line": 94
+          },
+          {
+            "path": "src/ara/containment.py",
+            "symbol": "build_contained_env",
+            "line": 73
+          },
+          {
+            "path": "src/ara/supervisor.py",
+            "symbol": "_on_query",
+            "line": 781
+          },
+          {
+            "path": "src/ara/bulwark.py",
+            "symbol": "evaluate",
+            "line": 820
+          }
+        ]
+      },
+      {
+        "id": "chunks",
+        "title": "Chunks and channels",
+        "role": "Control available structured operations and procedure transitions.",
+        "layer": "runtime",
+        "source": [
+          {
+            "path": "src/ara/runtime/chunks/runtime.py",
+            "symbol": "emit_tag",
+            "line": 202
+          },
+          {
+            "path": "src/ara/supervisor.py",
+            "symbol": "_on_channel_call",
+            "line": 1549
+          },
+          {
+            "path": "src/ara/runtime/activation.py",
+            "symbol": "mint",
+            "line": 56
+          },
+          {
+            "path": "src/ara/task_session.py",
+            "symbol": "record_action",
+            "line": 173
+          },
+          {
+            "path": "src/ara/task_session.py",
+            "symbol": "record_commit",
+            "line": 273
+          },
+          {
+            "path": "src/ara/task_session.py",
+            "symbol": "current_loadout_matches",
+            "line": 415
+          }
+        ]
+      },
+      {
+        "id": "binder",
+        "title": "Evidence Binder",
+        "role": "Stores captured content and searchable source metadata.",
+        "layer": "records",
+        "source": [
+          {
+            "path": "src/ara/runtime/binder/api.py",
+            "symbol": "put",
+            "line": 44
+          },
+          {
+            "path": "src/ara/runtime/binder/tool_capture.py",
+            "symbol": "capture_tool_exchanges",
+            "line": 108
+          },
+          {
+            "path": "src/ara/mitm_proxy.py",
+            "symbol": "_capture_evidence",
+            "line": 2396
+          }
+        ]
+      },
+      {
+        "id": "records",
+        "title": "Facts, leads, findings",
+        "role": "Preserve structured observations, questions, and claims.",
+        "layer": "records",
+        "source": [
+          {
+            "path": "src/ara/runtime/facts/channels.py",
+            "symbol": "FactAssertChannel",
+            "line": 68
+          },
+          {
+            "path": "src/ara/runtime/provenance.py",
+            "symbol": "enrich_evidence",
+            "line": 84
+          },
+          {
+            "path": "src/ara/runtime/facts/neighbors.py",
+            "symbol": "NeighborIndex",
+            "line": 29
+          },
+          {
+            "path": "src/ara/runtime/leads/priority.py",
+            "symbol": "compute_priority",
+            "line": 57
+          },
+          {
+            "path": "src/ara/runtime/leads/decay.py",
+            "symbol": "retrievability",
+            "line": 53
+          },
+          {
+            "path": "src/ara/runtime/leads/closure_gate.py",
+            "symbol": "check_closure",
+            "line": 26
+          },
+          {
+            "path": "src/ara/runtime/findings/channels.py",
+            "symbol": "FindingFileChannel",
+            "line": 333
+          },
+          {
+            "path": "src/ara/runtime/findings/validator.py",
+            "symbol": "_rule_claim_verification",
+            "line": 367
+          },
+          {
+            "path": "src/ara/runtime/findings/field_store.py",
+            "symbol": "record_finding_fields",
+            "line": 75
+          }
+        ]
+      },
+      {
+        "id": "review",
+        "title": "Spoils and sign-off",
+        "role": "Supports focused work and operator acceptance.",
+        "layer": "review",
+        "source": [
+          {
+            "path": "src/ara/armory/app.py",
+            "symbol": "_start_polish_task",
+            "line": 1025
+          },
+          {
+            "path": "src/ara/armory/polish.py",
+            "symbol": "build_directive",
+            "line": 154
+          },
+          {
+            "path": "src/ara/forge/reforge/driver.py",
+            "symbol": "propose",
+            "line": 55
+          },
+          {
+            "path": "src/ara/runtime/findings/channels.py",
+            "symbol": "FindingSignOffChannel",
+            "line": 486
+          },
+          {
+            "path": "src/ara/runtime/findings/validator.py",
+            "symbol": "validate_for_signoff",
+            "line": 662
+          }
+        ]
+      },
+      {
+        "id": "report",
+        "title": "Report Kiln",
+        "role": "Renders reviewed findings with evidence context.",
+        "layer": "output",
+        "source": [
+          {
+            "path": "src/ara/runtime/report/channels.py",
+            "symbol": "ReportRenderChannel",
+            "line": 25
+          },
+          {
+            "path": "src/ara/runtime/report/kiln.py",
+            "symbol": "render_report",
+            "line": 119
+          },
+          {
+            "path": "src/ara/runtime/style/channels.py",
+            "symbol": "StyleScoreChannel",
+            "line": 21
+          }
+        ]
+      },
+      {
+        "id": "growth",
+        "title": "Baseline and Reforge",
+        "role": "Turns reviewed experience into explicit equipment proposals.",
+        "layer": "authoring",
+        "source": [
+          {
+            "path": "src/ara/baseline.py",
+            "symbol": "record_from_session",
+            "line": 135
+          },
+          {
+            "path": "src/ara/baseline.py",
+            "symbol": "diff_against_session",
+            "line": 162
+          },
+          {
+            "path": "src/ara/baseline.py",
+            "symbol": "to_armor",
+            "line": 222
+          },
+          {
+            "path": "src/ara/armory/app.py",
+            "symbol": "_start_polish_task",
+            "line": 1025
+          },
+          {
+            "path": "src/ara/armory/polish.py",
+            "symbol": "build_directive",
+            "line": 154
+          },
+          {
+            "path": "src/ara/forge/reforge/driver.py",
+            "symbol": "propose",
+            "line": 55
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "operator",
+        "to": "armory",
+        "label": "sets intent and reviews"
+      },
+      {
+        "from": "armory",
+        "to": "keep",
+        "label": "prepares context"
+      },
+      {
+        "from": "keep",
+        "to": "forge",
+        "label": "supplies selected materials"
+      },
+      {
+        "from": "pack",
+        "to": "forge",
+        "label": "supplies definitions"
+      },
+      {
+        "from": "forge",
+        "to": "equipment",
+        "label": "seals capabilities"
+      },
+      {
+        "from": "armory",
+        "to": "equipment",
+        "label": "selects loadout"
+      },
+      {
+        "from": "equipment",
+        "to": "preflight",
+        "label": "supplies task prerequisites"
+      },
+      {
+        "from": "preflight",
+        "to": "hermes",
+        "label": "starts bounded task"
+      },
+      {
+        "from": "hermes",
+        "to": "guards",
+        "label": "requests operations"
+      },
+      {
+        "from": "guards",
+        "to": "supervisor",
+        "label": "queries authority"
+      },
+      {
+        "from": "hermes",
+        "to": "proxy",
+        "label": "sends model traffic"
+      },
+      {
+        "from": "supervisor",
+        "to": "chunks",
+        "label": "dispatches channels"
+      },
+      {
+        "from": "proxy",
+        "to": "binder",
+        "label": "captures interaction"
+      },
+      {
+        "from": "guards",
+        "to": "binder",
+        "label": "captures supported results"
+      },
+      {
+        "from": "chunks",
+        "to": "records",
+        "label": "writes accepted records"
+      },
+      {
+        "from": "binder",
+        "to": "records",
+        "label": "provides evidence"
+      },
+      {
+        "from": "records",
+        "to": "review",
+        "label": "presents results"
+      },
+      {
+        "from": "operator",
+        "to": "review",
+        "label": "accepts or requests work"
+      },
+      {
+        "from": "review",
+        "to": "report",
+        "label": "supplies signed-off findings"
+      },
+      {
+        "from": "review",
+        "to": "growth",
+        "label": "proposes improvements"
+      },
+      {
+        "from": "growth",
+        "to": "forge",
+        "label": "revises methods"
+      },
+      {
+        "from": "growth",
+        "to": "equipment",
+        "label": "promotes reviewed controls"
+      }
+    ]
+  },
+  "useCases": [
+    {
+      "title": "Professional security assessment",
+      "description": "Apply a reviewed method within one engagement scope and operating window.",
+      "outcome": "Evidence-backed records, operator review, and structured report output."
+    },
+    {
+      "title": "Source-based research",
+      "description": "Convert approved technical material into a reusable procedure and typed vocabulary.",
+      "outcome": "Traceable observations, unresolved leads, and reviewed method revisions."
+    },
+    {
+      "title": "Agent platform operations",
+      "description": "Separate persistent identity and hardening from changing methods and engagement context.",
+      "outcome": "Composable equipment with visible runtime decisions and task state."
+    },
+    {
+      "title": "Bounded operational procedures",
+      "description": "Use defined windows, task obligations, and explicit review points around recurring work.",
+      "outcome": "Controlled execution records and reusable, reviewed capability."
+    }
+  ],
+  "sourceRoots": [
+    "bin",
+    "src/ara",
+    "src/guard"
+  ],
+  "controlSummary": "Control in Depth starts where supported calls reach files, executables, and network destinations. Policy and task gates add engagement conditions and progress obligations. Model guidance, evidence, and operator review connect permitted work to accepted output.",
+  "controlLayers": [
+    {
+      "id": "linux-network-filter",
+      "title": "Installed Linux network filter",
+      "kind": "operation gate",
+      "boundary": "Selected network syscall forms in the launched child and descendants.",
+      "mechanism": "A real seccomp filter requests decisions for connect and destination-bearing sendto; it denies io_uring_setup.",
+      "prevents": "A denied selected syscall cannot continue through this notification response.",
+      "activation": "Containment, the enforcement flag, accepted platform screening, successful installation, and listener attachment. Armory requests this by default for task runs.",
+      "attempt": "A trapped connect targets an IP outside the projected allowlist.",
+      "decision": "Allow rules precede deny rules. An unmatched IP or unreadable destination denies unless fail-open is enabled. Installation failure can continue without this filter.",
+      "source": [
+        {
+          "path": "src/ara/launch.py",
+          "symbol": "launch",
+          "line": 447
+        },
+        {
+          "path": "src/ara/seccomp_notif.py",
+          "symbol": "_build_filter",
+          "line": 80
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_seccomp_decide",
+          "line": 1154
+        },
+        {
+          "path": "src/ara/seccomp_notif.py",
+          "symbol": "NotifHandler.deny",
+          "line": 234
+        }
+      ]
+    },
+    {
+      "id": "native-files",
+      "title": "Native file and directory access",
+      "kind": "operation gate",
+      "boundary": "Supported libc file, navigation, and permission calls.",
+      "mechanism": "The loaded shim resolves the path and checks its cached projected denial rules before the original call.",
+      "prevents": "A matching live denial stops that supported operation with EACCES.",
+      "activation": "The process loads the library and completes the supervisor handshake; relevant rules apply and shadow mode is off.",
+      "attempt": "A wrapped open targets /workspace/private/credentials.json under a matching deny rule.",
+      "decision": "The wrapper returns failure before the real open. Unmatched paths and failed canonicalization proceed. The native cache comes from the initial handshake.",
+      "source": [
+        {
+          "path": "src/guard/libc_shim/shim.c",
+          "symbol": "enforce_open",
+          "line": 639
+        },
+        {
+          "path": "src/guard/libc_shim/shim.c",
+          "symbol": "enforce_layer",
+          "line": 1145
+        },
+        {
+          "path": "src/guard/libc_shim/ipc.c",
+          "symbol": "do_connect_and_handshake",
+          "line": 286
+        }
+      ]
+    },
+    {
+      "id": "native-exec",
+      "title": "Native executable boundary",
+      "kind": "operation gate",
+      "boundary": "Supported exec wrappers in a process that loads the shim.",
+      "mechanism": "The shim matches command forms, executable paths, and selected path-like operands before real execution.",
+      "prevents": "A matching command or protected operand denial stops that wrapped execution with EACCES.",
+      "activation": "Loaded supervised shim, applicable cached rule, and live enforcement. Supported wrappers restore the child preload environment.",
+      "attempt": "A proposed executable or file operand matches a protected rule.",
+      "decision": "The gate returns before the real exec call. Unmatched execution proceeds. This path does not send a task-budget query for every native exec.",
+      "source": [
+        {
+          "path": "src/guard/libc_shim/shim.c",
+          "symbol": "enforce_exec",
+          "line": 433
+        },
+        {
+          "path": "src/guard/libc_shim/shim.c",
+          "symbol": "execve",
+          "line": 601
+        }
+      ]
+    },
+    {
+      "id": "native-network",
+      "title": "Native IP destination boundary",
+      "kind": "operation gate",
+      "boundary": "Wrapped IPv4 and IPv6 connect calls.",
+      "mechanism": "The shim checks the resolved numeric IP and port against cached allow and deny rules.",
+      "prevents": "A matching deny or active unmatched-default deny stops real_connect.",
+      "activation": "Loaded shim and live enforcement. ARA_SHIM_NET_ENFORCE activates unmatched denial; Armory defaults it to 1 for tasks.",
+      "attempt": "A wrapped connection targets 198.51.100.77:443 outside the projected allowlist.",
+      "decision": "Allow matches win first. Deny then returns EACCES. Without the unmatched-denial flag, a local miss is permitted and audited. Unix sockets generally pass.",
+      "source": [
+        {
+          "path": "src/guard/libc_shim/shim.c",
+          "symbol": "connect",
+          "line": 928
+        }
+      ]
+    },
+    {
+      "id": "node-resources",
+      "title": "Node resource hooks",
+      "kind": "operation gate",
+      "boundary": "Supported Node filesystem, HTTP, and socket APIs.",
+      "mechanism": "Armed hooks check local projected resource rules before the original JavaScript API.",
+      "prevents": "A local matching denial rejects the file call or emits a network error before the original operation.",
+      "activation": "Node guard import, accepted handshake, supported hooked API, applicable rule, and shadow mode off.",
+      "attempt": "A supported Node file read names a path in the local deny set.",
+      "decision": "The hook rejects the call. Local misses generally proceed with best-effort audit. Node can receive rule updates; network allows precede denies.",
+      "source": [
+        {
+          "path": "src/guard/index.mjs",
+          "symbol": "arm",
+          "line": 33
+        },
+        {
+          "path": "src/guard/hooks/fs.mjs",
+          "symbol": "checkOp",
+          "line": 29
+        },
+        {
+          "path": "src/guard/hooks/net.mjs",
+          "symbol": "installHttpHook",
+          "line": 148
+        },
+        {
+          "path": "src/guard/local_rules.mjs",
+          "symbol": "LocalRules.matchNet",
+          "line": 96
+        }
+      ]
+    },
+    {
+      "id": "node-spawn",
+      "title": "Node asynchronous child process",
+      "kind": "operation gate",
+      "boundary": "Supported asynchronous child_process wrappers.",
+      "mechanism": "The wrapper waits for a supervisor query result before the original spawn.",
+      "prevents": "A nonallow response or query failure prevents that asynchronous child from starting.",
+      "activation": "Armed guard and the applicable asynchronous wrapper.",
+      "attempt": "A supported spawn receives a supervisor deny decision.",
+      "decision": "The wrapper reports an error without the original spawn. CommonJS synchronous process wrappers only audit and propagate environment; ESM synchronous variants use local checks.",
+      "source": [
+        {
+          "path": "src/guard/hooks/child_process.mjs",
+          "symbol": "querySpawnDecision",
+          "line": 289
+        },
+        {
+          "path": "src/guard/hooks/child_process.mjs",
+          "symbol": "wrapSyncAuditOnly",
+          "line": 475
+        },
+        {
+          "path": "src/guard/wrappers.mjs",
+          "symbol": "wrap_node_child_process",
+          "line": 484
+        }
+      ]
+    },
+    {
+      "id": "python-spawn",
+      "title": "Python task subprocess boundary",
+      "kind": "operation gate",
+      "boundary": "Python subprocess.Popen under the task bootstrap.",
+      "mechanism": "The wrapper sends exec.spawn before the original Popen constructor.",
+      "prevents": "A nonallow result, invalid decision, or transport exception prevents that process launch.",
+      "activation": "Python bootstrap imports successfully; transcript protocol is v1 and a task identifier is present. This is the default Hermes task integration.",
+      "attempt": "The task supervisor is unavailable when Hermes proposes a subprocess.",
+      "decision": "The wrapper raises PermissionError before the original Popen call. Non-task launches do not activate this Python pre-spawn gate.",
+      "source": [
+        {
+          "path": "src/ara/clients/sitecustomize.py",
+          "symbol": "_enforce_subprocess_decision",
+          "line": 83
+        },
+        {
+          "path": "src/ara/clients/sitecustomize.py",
+          "symbol": "_patch_subprocess_module",
+          "line": 182
+        },
+        {
+          "path": "src/ara/clients/transcript.py",
+          "symbol": "query",
+          "line": 186
+        }
+      ]
+    },
+    {
+      "id": "proxy-connect",
+      "title": "Proxy connection policy",
+      "kind": "operation gate",
+      "boundary": "CONNECT traffic that actually uses the session proxy.",
+      "mechanism": "The proxy checks applicable network allows before network denies, before upstream tunneling.",
+      "prevents": "A matched denial returns HTTP 403 without the upstream tunnel.",
+      "activation": "Session proxy active, client uses it, and an applicable network deny matches without an allow match.",
+      "attempt": "A proxied CONNECT asks for a denied target.",
+      "decision": "The proxy stops before upstream. Unmatched connections pass. Blind tunnels do not inspect encrypted model content; direct traffic needs its other network controls.",
+      "source": [
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_bulwark_allows_connect",
+          "line": 619
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_handle_connect",
+          "line": 775
+        }
+      ]
+    },
+    {
+      "id": "supervisor-policy",
+      "title": "Scoped operation policy",
+      "kind": "policy gate",
+      "boundary": "Queries submitted by a participating consumer.",
+      "mechanism": "Bulwark selects scoped deny, approval, and allow rules; the supervisor composes further gates.",
+      "prevents": "A final deny prevents an operation when the querying consumer applies that result.",
+      "activation": "A query reaches the supervisor, relevant rules apply, and the final observation or approval settings retain the denial.",
+      "attempt": "A Python task exec.spawn query matches a global deny.",
+      "decision": "The general evaluator gives deny precedence and permits unmatched queries. Final shadow conversion permits denies except recognized irreversible danger. Local projections have separate contracts.",
+      "source": [
+        {
+          "path": "src/ara/bulwark.py",
+          "symbol": "evaluate",
+          "line": 820
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_query",
+          "line": 781
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_sync_rules_payload",
+          "line": 373
+        }
+      ]
+    },
+    {
+      "id": "trim-contract",
+      "title": "Engagement operating contract",
+      "kind": "policy gate",
+      "boundary": "Applicable supervisor queries with an active Trim view.",
+      "mechanism": "The runtime composes time windows, stop latch, classification policy, and rate conditions.",
+      "prevents": "A denied operating condition can tighten an otherwise permitted query.",
+      "activation": "Active armor and Trim, applicable nonexempt query, successful evaluation, and effective final enforcement setting.",
+      "attempt": "A classified active tool is proposed for a passive engagement.",
+      "decision": "The Trim decision denies. Missing Trim or evaluation errors retain prior policy. Queue delays are returned by the API but not slept by the current supervisor.",
+      "source": [
+        {
+          "path": "src/ara/runtime/trim_gate.py",
+          "symbol": "evaluate_call",
+          "line": 109
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_evaluate_trim_gate",
+          "line": 1304
+        }
+      ]
+    },
+    {
+      "id": "task-debt",
+      "title": "Task continuity and progress",
+      "kind": "task gate",
+      "boundary": "Queried target exec.spawn and browser.nav actions.",
+      "mechanism": "Persisted task state checks loadout hashes and commit, branch, verification, or blocked phases.",
+      "prevents": "A missing run, changed loadout, or outstanding obligation can hold the next applicable target action.",
+      "activation": "Task identifier, classified target query, prior allow, and live final query enforcement.",
+      "attempt": "A task proposes its next process while commit_required is persisted.",
+      "decision": "TASK_COMMIT_REQUIRED becomes deny; the Python consumer raises before Popen. Network connections and HTTP requests do not spend this action budget.",
+      "source": [
+        {
+          "path": "src/ara/task_action_gate.py",
+          "symbol": "evaluate_query",
+          "line": 35
+        },
+        {
+          "path": "src/ara/task_session.py",
+          "symbol": "TaskRunSession.record_action",
+          "line": 173
+        }
+      ]
+    },
+    {
+      "id": "typed-channel",
+      "title": "Chunk and typed channel authority",
+      "kind": "task gate",
+      "boundary": "Runtime channel dispatch and store mutation.",
+      "mechanism": "The dispatcher checks registration, active tool_surface, task transition rules, caller role, and body schema.",
+      "prevents": "An unavailable channel or invalid input is rejected before channel execution.",
+      "activation": "Mounted engagement and a channel request through the supervisor or its typed interface.",
+      "attempt": "An agent requests an existing channel outside the active chunk surface.",
+      "decision": "tool_not_in_surface rejects the call. The supervisor fixes the caller as agent; body fields cannot grant the operator role. This surface governs channels, not all shell programs.",
+      "source": [
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_channel_call",
+          "line": 1549
+        },
+        {
+          "path": "src/ara/runtime/channels/base.py",
+          "symbol": "Channel.call",
+          "line": 90
+        }
+      ]
+    },
+    {
+      "id": "model-mediation",
+      "title": "Supported model message decisions",
+      "kind": "policy gate",
+      "boundary": "Selected proxy model traffic and loaded Python OpenAI SDK request wrappers.",
+      "mechanism": "Applicable rules can deny a request before upstream or replace a supported reply; SDK deny returns a synthetic completion.",
+      "prevents": "The denied supported request is not sent through its original upstream call.",
+      "activation": "Intercepted provider and supported format, or active SDK wrapper. Proxy use, trust configuration, and interception settings determine coverage.",
+      "attempt": "A supported Python chat completion receives a request deny.",
+      "decision": "The wrapper returns a synthetic completion. Task transcript transport failure denies; non-task failure and malformed decision fall-through permit. Node fetch capture discards decisions.",
+      "source": [
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_try_enforce_bulwark_request",
+          "line": 1073
+        },
+        {
+          "path": "src/ara/clients/sitecustomize.py",
+          "symbol": "_patch_openai_module",
+          "line": 435
+        },
+        {
+          "path": "src/ara/clients/transcript.py",
+          "symbol": "intercept",
+          "line": 122
+        }
+      ]
+    },
+    {
+      "id": "model-guidance",
+      "title": "Identity and method guidance",
+      "kind": "model guidance",
+      "boundary": "Supported system and message envelopes supplied to the model.",
+      "mechanism": "ABSOLUTE composes selected identity and hardening; the chunk brief explains current channels and exits.",
+      "prevents": "It directs the model toward the selected task method; resource and channel gates perform their separate denials.",
+      "activation": "Supported rewrite or brief path, selected equipment, and the relevant request format.",
+      "attempt": "The model prepares its next action from the current chunk context.",
+      "decision": "The model receives method and scope instructions. This guidance does not itself return EACCES for a file or network call.",
+      "source": [
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_try_apply_request_rewrite",
+          "line": 1594
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_maybe_inject_forge_brief",
+          "line": 1939
+        }
+      ]
+    },
+    {
+      "id": "observed-activity",
+      "title": "Observation and comparison",
+      "kind": "observation",
+      "boundary": "Supported transcript, evidence, shadow, canary, and gateway capture paths.",
+      "mechanism": "Capture stores observed content; shadows supply alternate outputs; canaries identify marked reply content.",
+      "prevents": "Observation supplies review evidence. Capture alone does not prevent the original resource operation.",
+      "activation": "Relevant capture integration or configured comparison. Gateway traffic needs its protocol-specific path.",
+      "attempt": "A Node fetch hook captures a model request and receives an interception result.",
+      "decision": "That hook discards the decision before its original fetch. Other applicable request gates retain their own behavior.",
+      "source": [
+        {
+          "path": "src/guard/hooks/fetch.mjs",
+          "symbol": "installFetchHook",
+          "line": 83
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_dispatch_shadow",
+          "line": 2443
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_check_canaries_in_reply",
+          "line": 1244
+        },
+        {
+          "path": "src/ara/mitm_proxy.py",
+          "symbol": "_try_capture_tool_exchanges",
+          "line": 1924
+        }
+      ]
+    },
+    {
+      "id": "record-acceptance",
+      "title": "Finding acceptance contract",
+      "kind": "record gate",
+      "boundary": "Finding validation and sign-off transition.",
+      "mechanism": "Validators inspect applicable schema, references, captured content, lifecycle, explanation, and remediation conditions.",
+      "prevents": "A failed sign-off check prevents the signed_off record from being appended.",
+      "activation": "Sign-off request for an eligible finding, valid operator caller, and the relevant validation context.",
+      "attempt": "A draft lacks the evidence or content needed for sign-off.",
+      "decision": "The channel raises a rejection before the state transition. Reports use signed-off findings; validation does not undo earlier operations.",
+      "source": [
+        {
+          "path": "src/ara/runtime/findings/validator.py",
+          "symbol": "validate_for_signoff",
+          "line": 662
+        },
+        {
+          "path": "src/ara/runtime/findings/channels.py",
+          "symbol": "FindingSignOffChannel.execute",
+          "line": 499
+        }
+      ]
+    },
+    {
+      "id": "operator-authority",
+      "title": "Operator permission and accepted output",
+      "kind": "operator authority",
+      "boundary": "Authenticated configuration, explicit approval policy, and operator-only review channels.",
+      "mechanism": "The operator selects scope, equipment, enforcement settings, approval automation, and finding acceptance.",
+      "prevents": "Caller restrictions keep agent channel messages from performing operator-only sign-off.",
+      "activation": "Protected control-plane access, host permissions, and caller assignment through the supported interfaces.",
+      "attempt": "An agent submits finding.sign_off through its channel connection.",
+      "decision": "The agent caller fails allowed_callers. Operation approvals use the selected branch: human resolution, configured routine auto-grant, or task danger attestation.",
+      "source": [
+        {
+          "path": "src/ara/runtime/channels/base.py",
+          "symbol": "Channel.call",
+          "line": 90
+        },
+        {
+          "path": "src/ara/runtime/findings/channels.py",
+          "symbol": "FindingSignOffChannel",
+          "line": 486
+        },
+        {
+          "path": "src/ara/supervisor.py",
+          "symbol": "_on_query",
+          "line": 943
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/assets/screenshots/armor-sets-desktop.png",
+      "title": "Armor Sets",
+      "alt": "Armor Sets with the Hermes loadout and available armor cards.",
+      "caption": "Armor Sets shows the equipped Hermes armor and the empty Weapon and Trim slots.",
+      "kind": "interface",
+      "category": "Equipment"
+    },
+    {
+      "path": "docs/assets/screenshots/armor-creation-preview.png",
+      "title": "Armor creation",
+      "alt": "Armor creation form with generated identity preview, name, description, and sigil.",
+      "caption": "The Armor creation form shows an identity preview beside its name, description, and sigil fields.",
+      "kind": "interface",
+      "category": "Equipment"
+    },
+    {
+      "path": "docs/assets/screenshots/weapon-resource-catalog.png",
+      "title": "Weapon resource catalog",
+      "alt": "Weapon detail with a cited public wordlist resource and its allowed uses.",
+      "caption": "Weapon detail lists a public reference resource, its citation, and its permitted uses.",
+      "kind": "interface",
+      "category": "Equipment"
+    },
+    {
+      "path": "docs/assets/screenshots/weapon-knowledge-and-chunks.png",
+      "title": "Weapon knowledge and chunks",
+      "alt": "Weapon detail with extracted knowledge, alphabets, chunk graph, channel catalog, and policy files.",
+      "caption": "Weapon detail brings extracted knowledge, alphabets, chunk transitions, channels, and policy artifacts into one view.",
+      "kind": "interface",
+      "category": "Equipment"
+    },
+    {
+      "path": "docs/assets/screenshots/armor-sets-mobile.png",
+      "title": "Armor Sets on mobile",
+      "alt": "Mobile Armor Sets with a stacked Hermes loadout and armor cards.",
+      "caption": "The mobile view stacks the loadout slots and armor cards in one column.",
+      "kind": "interface",
+      "category": "Equipment"
+    },
+    {
+      "path": "docs/assets/screenshots/sew-trim-creation.png",
+      "title": "Trim creation",
+      "alt": "Sew Trim creation with its preview and engagement condition sections.",
+      "caption": "Sew groups target scope, operating conditions, authorization, and delivery settings into the Trim creation form.",
+      "kind": "interface",
+      "category": "Policy and scope"
+    },
+    {
+      "path": "docs/assets/screenshots/armory-status-loadout.png",
+      "title": "Armory status",
+      "alt": "Armory status with the Hermes loadout, equipment cards, and runtime summaries.",
+      "caption": "Status combines the Hermes loadout, equipment cards, installation details, and session information.",
+      "kind": "interface",
+      "category": "Sessions and approvals"
+    },
+    {
+      "path": "docs/assets/screenshots/hermes-task-loadout.png",
+      "title": "Hermes task controls",
+      "alt": "Running Hermes task with its Armor, Weapon, Trim, Temper, active chunk, and activation.",
+      "caption": "The task view shows the Hermes worker, selected equipment, active chunk, and activation history.",
+      "kind": "interface",
+      "category": "Sessions and approvals"
+    },
+    {
+      "path": "docs/assets/screenshots/courtyard-session-ledger.png",
+      "title": "Courtyard session ledger",
+      "alt": "Courtyard session ledger with a contained session card.",
+      "caption": "Courtyard lists a contained session with guard, policy-hit, denial, and pending-request counts.",
+      "kind": "interface",
+      "category": "Sessions and approvals"
+    },
+    {
+      "path": "docs/assets/screenshots/courtyard-resource-approval.png",
+      "title": "Pending resource approval",
+      "alt": "Courtyard approval queue with a pending resource URL request and response controls.",
+      "caption": "A pending resource request shows its target identifier and controls for an allow or deny response.",
+      "kind": "interface",
+      "category": "Sessions and approvals"
+    },
+    {
+      "path": "docs/assets/screenshots/session-activity-desktop.png",
+      "title": "Session activity",
+      "alt": "Session activity with audit controls, timeline, and spawn tree.",
+      "caption": "The session view combines activity, audit controls, a timeline, and a spawn tree.",
+      "kind": "interface",
+      "category": "Sessions and approvals"
+    },
+    {
+      "path": "docs/assets/screenshots/forge-sessions-desktop.png",
+      "title": "Forge sessions",
+      "alt": "Forge sessions with phases, extraction counts, and channel flows.",
+      "caption": "Forge shows session phases, material counts, extraction counts, and the channel flow.",
+      "kind": "interface",
+      "category": "Forge"
+    },
+    {
+      "path": "docs/assets/screenshots/forge-manifest-review.png",
+      "title": "Forge manifest review",
+      "alt": "Forge manifest review with deposited materials and phase controls.",
+      "caption": "The manifest review displays source files, element counts, and controls for extraction, synthesis, and seal.",
+      "kind": "interface",
+      "category": "Forge"
+    },
+    {
+      "path": "docs/assets/screenshots/forge-extraction-progress.png",
+      "title": "Forge extraction progress",
+      "alt": "Forge EXHAUST phase with coverage, remaining elements, and bounded Hermes controls.",
+      "caption": "Forge displays extraction coverage, pending manifest elements, and controls for a bounded Hermes extraction run.",
+      "kind": "interface",
+      "category": "Forge"
+    },
+    {
+      "path": "docs/assets/screenshots/forge-synthesis-review.png",
+      "title": "Forge synthesis review",
+      "alt": "Forge synthesized draft with extraction totals and review controls.",
+      "caption": "The synthesis review shows draft component counts and the extraction records used to create the draft.",
+      "kind": "interface",
+      "category": "Forge"
+    },
+    {
+      "path": "docs/assets/screenshots/forge-sealed-session.png",
+      "title": "Sealed Forge session",
+      "alt": "Sealed Forge session with source materials, manifest totals, extraction totals, and audit link.",
+      "caption": "The sealed session retains its material list, manifest totals, extraction totals, and audit link.",
+      "kind": "interface",
+      "category": "Forge"
+    },
+    {
+      "path": "docs/assets/screenshots/rhema-live-workbench.png",
+      "title": "Rhema live workbench",
+      "alt": "Rhema live workbench with a selected request pair and recent envelope cards.",
+      "caption": "Rhema places the selected request pair beside its rule stack and recent interaction cards.",
+      "kind": "interface",
+      "category": "Model traffic"
+    },
+    {
+      "path": "docs/assets/screenshots/rhema-shadows-desktop.png",
+      "title": "Rhema shadow comparisons",
+      "alt": "Rhema Shadows with four paired request summaries.",
+      "caption": "Rhema shows paired request summaries with rule names, response status, and request size differences.",
+      "kind": "interface",
+      "category": "Model traffic"
+    }
+  ]
+}

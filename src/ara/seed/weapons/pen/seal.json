@@ -1,0 +1,25 @@
+{
+  "id": "pen",
+  "weapon_target_id": "pen",
+  "version": "0.1.0",
+  "is_seed": true,
+  "sealed_at": "2026-07-14T00:00:00Z",
+  "description": "Pack-forge weapon. Locks the agent to the pack-authoring surface during EXHAUST: read mats, and propose the new domain pack (alphabet declarations, starter entries, validator bindings, chunk graph, policy, detection) via typed forge channels. Hand-authored seed (not produced by `ara forge seal`).",
+  "policy_files": ["bulwark.md"],
+  "extraction_channels": [
+    "mats.search",
+    "mats.get",
+    "extract.conc",
+    "extract.bulwark_rule",
+    "extract.rhema_rule",
+    "extract.walls_path",
+    "propose.alphabet",
+    "propose.binding",
+    "propose.chunk",
+    "propose.detection"
+  ],
+  "alphabets": {},
+  "manifest_coverage": null,
+  "chunks": [],
+  "spec": "docs/superpowers/specs/2026-07-14-pack-forge-design.md"
+}

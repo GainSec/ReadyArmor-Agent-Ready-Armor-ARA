@@ -1,0 +1,66 @@
+[project]
+name = "ara"
+version = "0.1.0"
+description = "Agent Ready Armor - external supervisory layer for agent runtimes"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+# Optional libraries used by ara.forge.manifest.text_extract for the
+# corresponding mat formats. Each extractor degrades gracefully when
+# its dep isn't installed (manifest emits an opaque element with an
+# install hint instead of REPORT_SECTION).
+extract = [
+    "pypdf>=4",
+    "python-docx>=1",
+    "openpyxl>=3",
+    "xlrd>=1.2,<2",
+    "pytesseract>=0.3",
+    "pillow>=10",
+]
+
+[project.scripts]
+ara = "ara.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ara"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/ara/armory/static" = "ara/armory/static"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.pyright]
+include = ["src", "tests"]
+extraPaths = ["src"]
+# Keep pyright from chasing autopatch / build artefacts and surfacing
+# noise about paths that aren't part of the package.
+exclude = [
+    "**/__pycache__",
+    "build",
+    "dist",
+    ".pytest_cache",
+    ".ara",
+    ".serena",
+    "preflight",
+    "External-Source",
+]
+
+# Package and tests both resolve via the ``src`` root. Without explicit
+# execution environments, pyright re-resolves imports relative to each
+# file and emits false-positive "unknown import" warnings for most
+# intra-package references.
+[[tool.pyright.executionEnvironments]]
+root = "src"
+extraPaths = ["src"]
+
+[[tool.pyright.executionEnvironments]]
+root = "tests"
+extraPaths = ["src"]

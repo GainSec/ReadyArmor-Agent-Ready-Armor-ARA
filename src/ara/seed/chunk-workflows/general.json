@@ -1,0 +1,291 @@
+{
+  "name": "general",
+  "description": "Generic web/app recon loop: enumerate the surface, probe for issues, gather intel, write up findings, operator sign-off. The default for most engagements.",
+  "chunks": [
+    {
+      "id": "enum",
+      "title": "Enumerate \u2014 survey the in-scope surface",
+      "prompt_fragment": "You are in enumeration mode. Discover endpoints, technologies, surfaces. Do NOT file findings. Capture observations as facts; promote suspicions to leads.",
+      "tool_surface": [
+        "fact.assert",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "lead.file",
+        "evidence.search",
+        "evidence.get",
+        "mats.search",
+        "chunks.emit_tag"
+      ],
+      "exits": {
+        "<surface_mapped>": {
+          "tag": "<surface_mapped>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Have enough surface coverage; advance to probe."
+        },
+        "<need_pause>": {
+          "tag": "<need_pause>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "agent",
+          "description": "Operator input required."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": true,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "recon_read",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "recon_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "recon_fs",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "enum_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "probe",
+      "title": "Probe \u2014 investigative exploration",
+      "prompt_fragment": "You are in probe mode. Investigate freely within scope: fetch, observe, capture evidence, build hypotheses. You are NOT here to file findings. Findings come later, in the writeup chunk.",
+      "tool_surface": [
+        "evidence.search",
+        "evidence.get",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "fact.assert",
+        "lead.file",
+        "mats.search",
+        "chunks.emit_tag",
+        "finding.file"
+      ],
+      "exits": {
+        "<hypothesis_filed>": {
+          "tag": "<hypothesis_filed>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Filed a lead; continue probing."
+        },
+        "<readied_for_writeup>": {
+          "tag": "<readied_for_writeup>",
+          "next_chunk_id": "intel",
+          "requires_caller": "agent",
+          "description": "Enough evidence; advance to intel."
+        },
+        "<investigation_done>": {
+          "tag": "<investigation_done>",
+          "next_chunk_id": "enum",
+          "requires_caller": "agent",
+          "description": "Wrap up; return to enum."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "probe_active",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "probe_exec",
+          "inhibition_level": 0.4,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "probe_fs",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "probe_reply",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "intel",
+      "title": "Intel \u2014 synthesize promoted leads into draft findings",
+      "prompt_fragment": "Review promoted leads + their evidence. Decide which warrant findings. Stage drafts in the writeup chunk; reject what doesn't hold up.",
+      "tool_surface": [
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "evidence.search",
+        "evidence.get",
+        "lead.investigate",
+        "chunks.emit_tag",
+        "fact.assert",
+        "lead.file",
+        "finding.file"
+      ],
+      "exits": {
+        "<advance_to_writeup>": {
+          "tag": "<advance_to_writeup>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Lead is ready to be written up as a finding."
+        },
+        "<back_to_probe>": {
+          "tag": "<back_to_probe>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Need more evidence; back to probe."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "intel_net",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "intel_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "intel_fs",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "intel_reply",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "writeup",
+      "title": "Writeup \u2014 file findings against intel-staged leads",
+      "prompt_fragment": "File findings citing the leads + evidence prepared during intel. Apply the weapon's category / severity / fix alphabets. Style.score against the writeup profile before sign-off.",
+      "tool_surface": [
+        "facts.query",
+        "evidence.get",
+        "finding.file",
+        "finding.enrich",
+        "style.score",
+        "chunks.emit_tag",
+        "fact.assert",
+        "lead.file"
+      ],
+      "exits": {
+        "<finding_drafted>": {
+          "tag": "<finding_drafted>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Drafted a finding; continue writing or pause for operator."
+        },
+        "<back_to_probe>": {
+          "tag": "<back_to_probe>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Need more evidence before continuing writeup."
+        },
+        "<engagement_complete>": {
+          "tag": "<engagement_complete>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "operator",
+          "description": "Operator signs off the engagement."
+        }
+      },
+      "can_emit_finding": true,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "writeup_net",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "writeup_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "writeup_fs",
+          "inhibition_level": 0.8,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "writeup_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "operator_review",
+      "title": "Operator review \u2014 terminal hold for sign-off / kill",
+      "prompt_fragment": "Halted for operator. Agent does not act here.",
+      "tool_surface": [],
+      "exits": {},
+      "can_emit_finding": false,
+      "is_terminal": true,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "operator_review_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    }
+  ]
+}

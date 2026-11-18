@@ -1,0 +1,66 @@
+{
+  "weapon_id": "pen",
+  "is_seed": true,
+  "generated_at": "2026-07-14T00:00:00Z",
+  "channels": [
+    {
+      "name": "propose.alphabet",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "Declare an alphabet for the new pack (name, shape, fields)."
+    },
+    {
+      "name": "extract.conc",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "A starter entry for a declared alphabet (keyed by alphabet_name)."
+    },
+    {
+      "name": "propose.binding",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "A validator binding: finding field -> rule -> alphabet."
+    },
+    {
+      "name": "propose.chunk",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "A phase-graph node (ChunkDef) for the pack's chunk_templates."
+    },
+    {
+      "name": "propose.detection",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "A manifest_detection keyword for finding-section detection."
+    },
+    {
+      "name": "extract.bulwark_rule",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "A bulwark rule for the pack's policy_defaults (baseline: hermes-default armor)."
+    },
+    {
+      "name": "extract.rhema_rule",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "A rhema rule for the pack's policy_defaults."
+    },
+    {
+      "name": "extract.walls_path",
+      "source_subsystem": "forge.exhaust",
+      "sink_subsystem": "forge.extractions",
+      "callers": ["agent"],
+      "purpose": "A WALLS entry for the pack's policy_defaults."
+    }
+  ],
+  "read_channels": [
+    "mats.search", "mats.get"
+  ]
+}

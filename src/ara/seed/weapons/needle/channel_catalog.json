@@ -1,0 +1,78 @@
+{
+  "weapon_id": "needle",
+  "is_seed": true,
+  "generated_at": "2026-06-16T00:00:00Z",
+  "channels": [
+    {
+      "name": "temper.absolute_candidate",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.proposals",
+      "callers": ["agent"],
+      "purpose": "Durable armor doctrine candidate; prefer expected-methodology posture and reusable safety constraints over broad refusal entries."
+    },
+    {
+      "name": "temper.bulwark_candidate",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.proposals",
+      "callers": ["agent"],
+      "purpose": "Bulwark rule candidate for enforceable methodology-fit and safety boundaries over tools, commands, paths, URLs, env vars, processes, or actions."
+    },
+    {
+      "name": "temper.canary_candidate",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.proposals",
+      "callers": ["agent"],
+      "purpose": "Canary seed candidate."
+    },
+    {
+      "name": "temper.rhema_candidate",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.proposals",
+      "callers": ["agent"],
+      "purpose": "Ask/reply mediation, rewrite, or redaction candidate."
+    },
+    {
+      "name": "temper.approval_gate_candidate",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.proposals",
+      "callers": ["agent"],
+      "purpose": "Operator approval gate candidate for risky or methodology-unexpected actions that may be valid with context."
+    },
+    {
+      "name": "temper.alert_hook_candidate",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.proposals",
+      "callers": ["agent"],
+      "purpose": "Alert or audit hook candidate."
+    },
+    {
+      "name": "temper.trim_template_candidate",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.proposals",
+      "callers": ["agent"],
+      "purpose": "Reusable trim-fit template candidate."
+    },
+    {
+      "name": "temper.coverage_summary",
+      "source_subsystem": "temper.tailor",
+      "sink_subsystem": "temper.session",
+      "callers": ["agent"],
+      "purpose": "Machine-checkable source/destination coverage summary. Every accepted candidate id must appear exactly once under the matching source and destination."
+    }
+  ],
+  "read_channels": [
+    "selected_mats.search", "selected_mats.get",
+    "weapon.summary", "weapon.policy_sources",
+    "trim.summary", "trim.template_sources",
+    "armor.policy_read",
+    "temper.destination_matrix"
+  ],
+  "candidate_metadata": {
+    "thread_type": "Required. One of secret_handling, methodology_fit, safety_boundary, prompt_mediation, operator_approval, alert_signal, runtime_boundary, trim_fit. Names the durable armor concern Tailor extracted before choosing a destination.",
+    "control": "Required. Destination-specific machine-readable control. absolute requires principle/allowed/restricted/exception_path; rhema requires action/layer/pattern/rationale and replacement for rewrite actions; bulwark requires action/layer/match/exception_path; canary requires signal/pattern/severity/trip_when/response; approval_gate requires surface/trigger/required_context/approval_prompt; alert_hook requires event/severity/message; trim_template requires task_family/placeholders/defaults/operator_inputs.",
+    "methodology_context": "Use whenever a candidate governs tools, commands, paths, URLs, action classes, or reproduction workflows because they are expected or unexpected for a task family. Records task_family, expected, unexpected, requires_context, never_without_approval, and exception_path.",
+    "safety_constraints": "Use whenever a candidate proposes reusable armor safety hardening. Records surfaces, allowed, restricted, requires_context, never_without_approval, and exception_path.",
+    "depth": "Do not stop at one candidate per destination. For rich source material, target 12-20 useful candidates per source and 72-120 useful candidates for a six-source run. Split controls when concerns differ by surface, destination, exception path, or operator action.",
+    "coverage": "temper.coverage_summary must reference every accepted candidate id exactly once under the matching source and destination. If a source has fewer than 12 useful candidates, include minimum_exception_reason for that source."
+  }
+}

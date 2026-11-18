@@ -1,0 +1,8 @@
+{
+  "weapon_id": "needle",
+  "is_seed": true,
+  "mats": [],
+  "elements": [],
+  "coverage": null,
+  "note": "Hand-authored seed; no mats. Needle is the default Temper generation weapon and is not produced by EXHAUST."
+}

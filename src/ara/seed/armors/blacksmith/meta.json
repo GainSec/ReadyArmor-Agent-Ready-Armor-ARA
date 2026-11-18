@@ -1,0 +1,10 @@
+{
+  "description": "Default forge-only armor. Locks the agent to the forge surface: no shells, no web, no spawning, dangerous fs paths denied, credential env vars scrubbed. Companion to the blacksmith-hammer weapon.",
+  "sigil": "hammer",
+  "tags": ["forge", "default", "blacksmith"],
+  "shadow_mode": false,
+  "absolute_enforce": true,
+  "channels": [],
+  "created_at": 0.0,
+  "updated_at": 0.0
+}

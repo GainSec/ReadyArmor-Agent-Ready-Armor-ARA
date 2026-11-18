@@ -1,0 +1,8 @@
+{
+  "weapon_id": "blacksmith-hammer",
+  "is_seed": true,
+  "mats": [],
+  "elements": [],
+  "coverage": null,
+  "note": "Hand-authored seed; no mats. The forge orchestrator does not need a manifest for blacksmith-hammer because this weapon was not produced by EXHAUST."
+}

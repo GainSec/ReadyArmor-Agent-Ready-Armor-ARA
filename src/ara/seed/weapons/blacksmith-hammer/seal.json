@@ -1,0 +1,21 @@
+{
+  "id": "blacksmith-hammer",
+  "weapon_target_id": "blacksmith-hammer",
+  "version": "0.1.0",
+  "is_seed": true,
+  "sealed_at": "2026-04-26T00:00:00Z",
+  "description": "Default forge weapon. Locks the agent to the forge surface during EXHAUST: read mats, run extractor binaries, emit extraction events via the six typed forge channels. Hand-authored seed (not produced by `ara forge seal`).",
+  "policy_files": ["bulwark.md"],
+  "extraction_channels": [
+    "extract.proc",
+    "extract.conc",
+    "extract.fact_shape",
+    "extract.store",
+    "extract.line",
+    "fact.assert"
+  ],
+  "alphabets": {},
+  "manifest_coverage": null,
+  "chunks": [],
+  "spec": "docs/specs/blacksmith-hammer-v0.md"
+}

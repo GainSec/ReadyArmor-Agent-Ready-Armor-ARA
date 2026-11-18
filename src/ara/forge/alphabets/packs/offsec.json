@@ -1,0 +1,823 @@
+{
+  "name": "offsec",
+  "version": "1",
+  "description": "Default offsec pack: vulnerability category + severity rubric + remediation library.",
+  "alphabets": [
+    {
+      "name": "category",
+      "shape": "categorical",
+      "description": "Vulnerability classes (e.g. xss.reflected, sqli, idor).",
+      "schema": {
+        "fields": [
+          {
+            "name": "id",
+            "type": "str"
+          },
+          {
+            "name": "label",
+            "type": "str?"
+          },
+          {
+            "name": "description",
+            "type": "str?"
+          },
+          {
+            "name": "requires_proposed",
+            "type": "bool?"
+          }
+        ]
+      },
+      "starter": [
+        {
+          "id": "xss.reflected",
+          "label": "Reflected XSS"
+        },
+        {
+          "id": "xss.stored",
+          "label": "Stored XSS"
+        },
+        {
+          "id": "xss.dom",
+          "label": "DOM-based XSS"
+        },
+        {
+          "id": "sqli",
+          "label": "SQL injection"
+        },
+        {
+          "id": "idor",
+          "label": "IDOR"
+        },
+        {
+          "id": "ssrf",
+          "label": "SSRF"
+        },
+        {
+          "id": "xxe",
+          "label": "XXE"
+        },
+        {
+          "id": "csrf",
+          "label": "CSRF"
+        },
+        {
+          "id": "auth.bypass",
+          "label": "Authentication bypass"
+        },
+        {
+          "id": "auth.session_fixation",
+          "label": "Session fixation"
+        },
+        {
+          "id": "auth.mfa_bypass",
+          "label": "MFA bypass"
+        },
+        {
+          "id": "rbac.missing_check",
+          "label": "Missing authorization check"
+        },
+        {
+          "id": "secret.in_response",
+          "label": "Secret leaked in response"
+        },
+        {
+          "id": "secret.in_log",
+          "label": "Secret leaked in logs"
+        },
+        {
+          "id": "prototype_pollution",
+          "label": "Prototype pollution"
+        },
+        {
+          "id": "dos.amplification",
+          "label": "DoS amplification"
+        },
+        {
+          "id": "cmdi",
+          "label": "OS command injection"
+        },
+        {
+          "id": "rce",
+          "label": "Remote code execution"
+        },
+        {
+          "id": "ssti",
+          "label": "Server-side template injection"
+        },
+        {
+          "id": "path_traversal",
+          "label": "Path traversal / LFI"
+        },
+        {
+          "id": "deserialization",
+          "label": "Insecure deserialization"
+        },
+        {
+          "id": "open_redirect",
+          "label": "Open redirect"
+        },
+        {
+          "id": "cors.misconfig",
+          "label": "CORS misconfiguration"
+        },
+        {
+          "id": "jwt.flaw",
+          "label": "JWT validation flaw"
+        },
+        {
+          "id": "business_logic",
+          "label": "Business logic flaw"
+        },
+        {
+          "id": "race_condition",
+          "label": "Race condition / TOCTOU"
+        },
+        {
+          "id": "file_upload",
+          "label": "Unrestricted file upload"
+        },
+        {
+          "id": "mass_assignment",
+          "label": "Mass assignment"
+        },
+        {
+          "id": "request_smuggling",
+          "label": "HTTP request smuggling"
+        },
+        {
+          "id": "graphql.abuse",
+          "label": "GraphQL abuse / introspection"
+        },
+        {
+          "id": "info_disclosure",
+          "label": "Sensitive information disclosure"
+        },
+        {
+          "id": "other",
+          "label": "Uncategorized",
+          "requires_proposed": true
+        }
+      ]
+    },
+    {
+      "name": "severity_rubric",
+      "shape": "matrix",
+      "description": "data_class x access matrix yielding (score, bucket).",
+      "schema": {
+        "axes": [
+          "data_class",
+          "access"
+        ],
+        "cell_fields": [
+          {
+            "name": "score",
+            "type": "float"
+          },
+          {
+            "name": "bucket",
+            "type": "str"
+          }
+        ]
+      },
+      "buckets": {
+        "info": 0.0,
+        "low": 1.0,
+        "medium": 4.0,
+        "high": 7.0,
+        "critical": 9.0
+      },
+      "starter": [
+        {
+          "coords": {
+            "data_class": "PII",
+            "access": "read"
+          },
+          "cell": {
+            "score": 5.0,
+            "bucket": "medium"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "PII",
+            "access": "write"
+          },
+          "cell": {
+            "score": 7.0,
+            "bucket": "high"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "PII",
+            "access": "admin"
+          },
+          "cell": {
+            "score": 9.0,
+            "bucket": "critical"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "credential",
+            "access": "read"
+          },
+          "cell": {
+            "score": 7.0,
+            "bucket": "high"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "credential",
+            "access": "write"
+          },
+          "cell": {
+            "score": 9.0,
+            "bucket": "critical"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "credential",
+            "access": "admin"
+          },
+          "cell": {
+            "score": 9.5,
+            "bucket": "critical"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "secret",
+            "access": "read"
+          },
+          "cell": {
+            "score": 7.0,
+            "bucket": "high"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "secret",
+            "access": "write"
+          },
+          "cell": {
+            "score": 8.5,
+            "bucket": "high"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "secret",
+            "access": "admin"
+          },
+          "cell": {
+            "score": 9.5,
+            "bucket": "critical"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "internal",
+            "access": "read"
+          },
+          "cell": {
+            "score": 3.0,
+            "bucket": "low"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "internal",
+            "access": "write"
+          },
+          "cell": {
+            "score": 5.0,
+            "bucket": "medium"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "internal",
+            "access": "admin"
+          },
+          "cell": {
+            "score": 7.0,
+            "bucket": "high"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "public",
+            "access": "read"
+          },
+          "cell": {
+            "score": 0.5,
+            "bucket": "info"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "public",
+            "access": "write"
+          },
+          "cell": {
+            "score": 4.0,
+            "bucket": "medium"
+          }
+        },
+        {
+          "coords": {
+            "data_class": "public",
+            "access": "admin"
+          },
+          "cell": {
+            "score": 6.0,
+            "bucket": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "fix_library",
+      "shape": "template_set",
+      "description": "Remediation templates keyed to categories.",
+      "schema": {
+        "fields": [
+          {
+            "name": "id",
+            "type": "str"
+          },
+          {
+            "name": "title",
+            "type": "str"
+          },
+          {
+            "name": "applicable_categories",
+            "type": "ref:category"
+          },
+          {
+            "name": "body",
+            "type": "str"
+          }
+        ]
+      },
+      "starter": [
+        {
+          "id": "fix.xss.encode_output",
+          "title": "Encode output in the response",
+          "applicable_categories": [
+            "xss.reflected",
+            "xss.stored",
+            "xss.dom"
+          ],
+          "body": "Render user-controlled values via context-appropriate encoding (HTML entity, JS-string, attribute, URL). Prefer template-engine auto-escaping; never concatenate user data into HTML/JS."
+        },
+        {
+          "id": "fix.sqli.parameterize",
+          "title": "Use parameterized queries",
+          "applicable_categories": [
+            "sqli"
+          ],
+          "body": "Replace string-concatenated SQL with prepared statements / parameter binding for all user-controlled values. Validate types/lengths server-side."
+        },
+        {
+          "id": "fix.idor.authorize_object",
+          "title": "Authorize the object reference",
+          "applicable_categories": [
+            "idor",
+            "rbac.missing_check"
+          ],
+          "body": "Resolve the requested object server-side and verify the caller has permission to access THAT object \u2014 not just the action. Reject mismatches with 403."
+        },
+        {
+          "id": "fix.ssrf.allowlist_destination",
+          "title": "Allowlist outbound destinations",
+          "applicable_categories": [
+            "ssrf"
+          ],
+          "body": "Restrict outbound HTTP from the server to a known allowlist. Resolve hostnames in the application, reject private/link-local IPs (169.254/16, 10.0/8, 192.168/16, 127.0/8, ::1)."
+        },
+        {
+          "id": "fix.xxe.disable_external_entities",
+          "title": "Disable external entity resolution",
+          "applicable_categories": [
+            "xxe"
+          ],
+          "body": "Configure the XML parser with FEATURE_SECURE_PROCESSING=true and disallow doctype/external-general-entities/external-parameter-entities."
+        },
+        {
+          "id": "fix.csrf.synchronizer_token",
+          "title": "Add a synchronizer token",
+          "applicable_categories": [
+            "csrf"
+          ],
+          "body": "Tie state-changing requests to a per-session token (or use SameSite=strict cookies + Origin-header validation)."
+        },
+        {
+          "id": "fix.auth.enforce_mfa",
+          "title": "Enforce MFA on the auth path",
+          "applicable_categories": [
+            "auth.bypass",
+            "auth.mfa_bypass"
+          ],
+          "body": "Require a second factor (TOTP / WebAuthn) for all session establishments. Validate the second factor server-side; never trust client-asserted MFA state."
+        },
+        {
+          "id": "fix.session.regenerate_id",
+          "title": "Regenerate session id on auth-state change",
+          "applicable_categories": [
+            "auth.session_fixation"
+          ],
+          "body": "Issue a new session id on login, privilege escalation, and de-elevation. Invalidate the prior id."
+        },
+        {
+          "id": "fix.secret.never_log",
+          "title": "Never log or return secrets",
+          "applicable_categories": [
+            "secret.in_response",
+            "secret.in_log"
+          ],
+          "body": "Strip secret-like values (tokens, keys, password hashes) from log lines and HTTP response bodies. Add tests that fail when known secret patterns leak."
+        },
+        {
+          "id": "fix.proto.no_recursive_assign",
+          "title": "Block recursive __proto__ assignment",
+          "applicable_categories": [
+            "prototype_pollution"
+          ],
+          "body": "Use Object.create(null) for user-data containers. Reject keys named __proto__, constructor, prototype during deep-merge / JSON-load."
+        },
+        {
+          "id": "fix.dos.rate_limit",
+          "title": "Rate limit and bound work per request",
+          "applicable_categories": [
+            "dos.amplification"
+          ],
+          "body": "Apply per-IP / per-account rate limits at the edge. Bound CPU/memory per request (e.g. max body size, max recursion depth)."
+        },
+        {
+          "id": "fix.generic.scope_validation",
+          "title": "Add server-side input validation",
+          "applicable_categories": [
+            "other"
+          ],
+          "body": "Constrain the input to the expected type, length, and value set on the server. Operator should specialize this template into a category-specific fix in the report."
+        }
+      ]
+    },
+    {
+      "name": "impact",
+      "shape": "vector",
+      "description": "CIA impact axes; each scored 0..3.",
+      "schema": {
+        "axes": [
+          {
+            "name": "confidentiality",
+            "min": 0,
+            "max": 3,
+            "description": "Severity of confidentiality breach."
+          },
+          {
+            "name": "integrity",
+            "min": 0,
+            "max": 3,
+            "description": "Severity of integrity violation."
+          },
+          {
+            "name": "availability",
+            "min": 0,
+            "max": 3,
+            "description": "Severity of availability disruption."
+          }
+        ]
+      }
+    }
+  ],
+  "validator_bindings": [
+    {
+      "field": "category",
+      "rule": "FIELD_IN_ALPHABET",
+      "alphabet": "category"
+    },
+    {
+      "field": "severity_cell",
+      "rule": "FIELD_IN_MATRIX",
+      "alphabet": "severity_rubric"
+    },
+    {
+      "field": "fix_template_id",
+      "rule": "FIELD_IN_ALPHABET",
+      "alphabet": "fix_library"
+    },
+    {
+      "field": "impact",
+      "rule": "VECTOR_IN_RANGE",
+      "alphabet": "impact"
+    }
+  ],
+  "manifest_detection": {
+    "report_section": {
+      "keywords": [
+        "finding",
+        "vulnerability",
+        "vulnerab",
+        "issue",
+        "weakness"
+      ]
+    }
+  },
+  "policy_defaults": {
+    "walls": "# WALLS \u2014 offsec default (ships with offsec-pack weapons)\n#\n# Resource-centric deny rules. ARA stops the call at the boundary\n# regardless of which tool tried it. Operators may extend per-engagement\n# by editing the weapon's policy/walls.md draft before seal, or by\n# adding rules to <state_root>/WALLS.md after equip.\n\n## deny_path\n~/.ssh/**\n~/.aws/**\n~/.gnupg/**\n~/.config/gh/**\n~/.netrc\n/etc/shadow\n/etc/sudoers\n/etc/sudoers.d/**\n\n## deny_command\n# (empty by default; offsec engagements lean on path rules + scope_strict\n#  gem rather than blacklisting tools.)\n",
+    "bulwark": "# BULWARK \u2014 offsec default\n#\n# Layered policy: deny / approval / allow scoped to global, armor, or\n# weapon contexts. Synced to guards on hello + hot-reloaded on mtime\n# change. Empty default keeps the offsec engagement loop unblocked;\n# operators add specific approval gates here as engagements run.\n",
+    "rhema": "# RHEMA \u2014 offsec default\n#\n# Prompt-mediation rules evaluated on every LLM turn. Empty default;\n# operators add deny/rewrite rules per-engagement as scope dictates.\n# The forge-v1 auto-brief injection happens regardless of Rhema rules\n# \u2014 it's wired into the supervisor's prompt_intercept handler directly.\n"
+  },
+  "chunk_templates": [
+    {
+      "id": "enum",
+      "title": "Enumerate \u2014 survey the in-scope surface",
+      "prompt_fragment": "You are in enumeration mode. Discover endpoints, technologies, surfaces. Do NOT file findings. Capture observations as facts; promote suspicions to leads.",
+      "tool_surface": [
+        "fact.assert",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "lead.file",
+        "evidence.search",
+        "evidence.get",
+        "mats.search",
+        "chunks.emit_tag"
+      ],
+      "exits": {
+        "<surface_mapped>": {
+          "tag": "<surface_mapped>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Have enough surface coverage; advance to probe."
+        },
+        "<need_pause>": {
+          "tag": "<need_pause>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "agent",
+          "description": "Operator input required."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": true,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "recon_read",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "recon_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "recon_fs",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "enum_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "probe",
+      "title": "Probe \u2014 investigative exploration",
+      "prompt_fragment": "You are in probe mode. Investigate freely within scope: fetch, observe, capture evidence, build hypotheses. You are NOT here to file findings. Findings come later, in the writeup chunk.",
+      "tool_surface": [
+        "evidence.search",
+        "evidence.get",
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "fact.assert",
+        "lead.file",
+        "mats.search",
+        "chunks.emit_tag",
+        "finding.file"
+      ],
+      "exits": {
+        "<hypothesis_filed>": {
+          "tag": "<hypothesis_filed>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Filed a lead; continue probing."
+        },
+        "<readied_for_writeup>": {
+          "tag": "<readied_for_writeup>",
+          "next_chunk_id": "intel",
+          "requires_caller": "agent",
+          "description": "Enough evidence; advance to intel."
+        },
+        "<investigation_done>": {
+          "tag": "<investigation_done>",
+          "next_chunk_id": "enum",
+          "requires_caller": "agent",
+          "description": "Wrap up; return to enum."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "probe_active",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "probe_exec",
+          "inhibition_level": 0.4,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "probe_fs",
+          "inhibition_level": 0.7,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "probe_reply",
+          "inhibition_level": 0.2,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "intel",
+      "title": "Intel \u2014 synthesize promoted leads into draft findings",
+      "prompt_fragment": "Review promoted leads + their evidence. Decide which warrant findings. Stage drafts in the writeup chunk; reject what doesn't hold up.",
+      "tool_surface": [
+        "facts.query",
+        "facts.neighbors",
+        "facts.history",
+        "evidence.search",
+        "evidence.get",
+        "lead.investigate",
+        "chunks.emit_tag",
+        "fact.assert",
+        "lead.file",
+        "finding.file"
+      ],
+      "exits": {
+        "<advance_to_writeup>": {
+          "tag": "<advance_to_writeup>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Lead is ready to be written up as a finding."
+        },
+        "<back_to_probe>": {
+          "tag": "<back_to_probe>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Need more evidence; back to probe."
+        }
+      },
+      "can_emit_finding": false,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "intel_net",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "intel_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "intel_fs",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "intel_reply",
+          "inhibition_level": 0.9,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "writeup",
+      "title": "Writeup \u2014 file findings against intel-staged leads",
+      "prompt_fragment": "File findings citing the leads + evidence prepared during intel. Apply the weapon's category / severity / fix alphabets. Style.score against the writeup profile before sign-off.",
+      "tool_surface": [
+        "facts.query",
+        "evidence.get",
+        "finding.file",
+        "finding.enrich",
+        "style.score",
+        "chunks.emit_tag",
+        "fact.assert",
+        "lead.file"
+      ],
+      "exits": {
+        "<finding_drafted>": {
+          "tag": "<finding_drafted>",
+          "next_chunk_id": "writeup",
+          "requires_caller": "agent",
+          "description": "Drafted a finding; continue writing or pause for operator."
+        },
+        "<back_to_probe>": {
+          "tag": "<back_to_probe>",
+          "next_chunk_id": "probe",
+          "requires_caller": "agent",
+          "description": "Need more evidence before continuing writeup."
+        },
+        "<engagement_complete>": {
+          "tag": "<engagement_complete>",
+          "next_chunk_id": "operator_review",
+          "requires_caller": "operator",
+          "description": "Operator signs off the engagement."
+        }
+      },
+      "can_emit_finding": true,
+      "is_terminal": false,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "writeup_net",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "writeup_exec",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "writeup_fs",
+          "inhibition_level": 0.8,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "writeup_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    },
+    {
+      "id": "operator_review",
+      "title": "Operator review \u2014 terminal hold for sign-off / kill",
+      "prompt_fragment": "Halted for operator. Agent does not act here.",
+      "tool_surface": [],
+      "exits": {},
+      "can_emit_finding": false,
+      "is_terminal": true,
+      "is_entry": false,
+      "gems": [
+        {
+          "layer": "net",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "exec",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "fs",
+          "rule_subset": "paused",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        },
+        {
+          "layer": "reply",
+          "rule_subset": "operator_review_reply",
+          "inhibition_level": 1.0,
+          "scope": "strict"
+        }
+      ]
+    }
+  ]
+}

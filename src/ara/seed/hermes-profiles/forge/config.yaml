@@ -1,0 +1,71 @@
+# Hermes profile — forge mode.
+#
+# Stripped-down config for ARA forge sessions. Loaded by setting
+# HERMES_HOME to a directory that contains this file (typically
+# ``~/.hermes/profiles/forge`` after the ARA forge launcher copies
+# this seed into place).
+#
+# Defaults to qwen3.6 through a local LM Studio server with
+# reasoning_effort=low and the forge MCP bridge wired to the
+# contained session's guard socket. Everything else is left at
+# library defaults so the prompt stays small.
+
+# ---------------------------------------------------------------------------
+# Model — local LM Studio endpoint; configure this URL for another model server.
+# ---------------------------------------------------------------------------
+model:
+  default: "qwen/qwen3.6-35b-a3b"
+  provider: "lmstudio"
+  base_url: "http://127.0.0.1:1234/v1"
+  # Reasoning kept low for forge work — the model is summarising
+  # source bytes into structured bodies, not reasoning open-endedly.
+  reasoning_effort: "none"
+
+# ---------------------------------------------------------------------------
+# Toolsets — disable everything Hermes ships built-in. The forge agent
+# uses the MCP-bridged ara-forge tools exclusively. Nothing else is
+# appropriate during EXHAUST, and every disabled tool saves prompt
+# tokens that we'd otherwise burn describing it.
+# ---------------------------------------------------------------------------
+platform_toolsets:
+  cli: []     # no built-in toolsets — only MCP tools
+
+# ---------------------------------------------------------------------------
+# Agent loop — narrow.
+# ---------------------------------------------------------------------------
+agent:
+  # Forge prompts are short; per-iteration only one or two tool-call
+  # rounds (mats.get → extract.*). Cap below default 60 to avoid
+  # runaway loops if the model gets stuck.
+  max_turns: 12
+
+# ---------------------------------------------------------------------------
+# Skills — none auto-loaded. SOUL.md carries the only persona the
+# agent needs.
+# ---------------------------------------------------------------------------
+skills:
+  creation_nudge_interval: 0   # don't suggest skill creation during forge
+
+# ---------------------------------------------------------------------------
+# MCP servers — the forge bridge. ${VAR} interpolated from os.environ
+# at config-load; ARA_SOCKET / ARA_SESSION_TOKEN / ARA_SESSION_ID are
+# set by ``ara launch --contain`` and carried through.
+# ---------------------------------------------------------------------------
+mcp_servers:
+  ara-forge:
+    command: python3.9
+    args: ["-m", "ara.cli", "forge-mcp"]
+    env:
+      PYTHONPATH: "${PYTHONPATH}"
+      ARA_SOCKET: "${ARA_SOCKET}"
+      ARA_SESSION_TOKEN: "${ARA_SESSION_TOKEN}"
+      ARA_SESSION_ID: "${ARA_SESSION_ID}"
+      # Pack forges set this to "pack" so the MCP server exposes only the
+      # propose.* pack tools; unset (weapon forge) interpolates empty → forge mode.
+      ARA_FORGE_MCP_MODE: "${ARA_FORGE_MCP_MODE}"
+
+# ---------------------------------------------------------------------------
+# Memory / session_search / streaming — left at library defaults.
+# Memory is denied at the policy layer for blacksmith anyway; not
+# worth shaping here.
+# ---------------------------------------------------------------------------

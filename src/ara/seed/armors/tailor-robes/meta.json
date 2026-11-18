@@ -1,0 +1,10 @@
+{
+  "description": "Default temper-only armor. Locks the agent to tailoring reviewed armor policy suggestions from MATS, sealed weapons, trims, and operator evidence. Companion to the needle weapon.",
+  "sigil": "needle",
+  "tags": ["temper", "default", "tailor", "policy-candidates"],
+  "shadow_mode": false,
+  "absolute_enforce": true,
+  "channels": [],
+  "created_at": 0.0,
+  "updated_at": 0.0
+}
